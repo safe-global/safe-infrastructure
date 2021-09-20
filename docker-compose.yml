@@ -1,16 +1,37 @@
-version: '3.5'
+version: '3.5'
 
 volumes:
-  cgw-nginx-shared:
-  config-service-nginx-shared:
-  tx-service-nginx-shared:
-
+  nginx-shared:
+  
 services:
   redis:
     image: redis:5-alpine
 
+  db:
+    image: postgres:13-alpine
+    env_file:
+      - env_files/cfg.env
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+
+  # Safe Config Service
+  nginx:
+    image: nginx:1.20-alpine
+    env_file:
+      - env_files/cfg.env
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - nginx-shared:${DOCKER_NGINX_VOLUME_ROOT}
+    depends_on:
+      - cfg
+  cfg:
+    image: gnosispm/safe-config-service
+    env_file: 
+      - env_files/cfg.env
+
+  # Safe Client Gateway
   cgw:
-    image: gnosispm/safe-client-gateway:v3.4.0
+    image: gnosispm/safe-client-gateway
     env_file:
       - env_files/cgw.env
     environment:
