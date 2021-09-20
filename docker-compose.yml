@@ -1,0 +1,19 @@
+version: '3.5'
+
+volumes:
+  cgw-nginx-shared:
+  config-service-nginx-shared:
+  tx-service-nginx-shared:
+
+services:
+  redis:
+    image: redis:5-alpine
+
+  cgw:
+    image: gnosispm/safe-client-gateway:v3.4.0
+    env_file:
+      - env_files/cgw.env
+    environment:
+      - REDIS_URL=redis://redis
+    depends_on:
+      - redis
