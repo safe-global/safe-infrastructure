@@ -1,1 +1,5 @@
 .env
+.DS_Store
+.idea/
+data/
+nginx/
