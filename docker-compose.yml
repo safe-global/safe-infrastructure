@@ -1,7 +1,4 @@
-version: '3.5'
-
-volumes:
-  nginx-shared:
+version: '3.9'
   
 services:
   redis:
@@ -10,7 +7,7 @@ services:
   db:
     image: postgres:13-alpine
     env_file:
-      - env_files/cfg.env
+      - container_env_files/cfg.env
     volumes:
       - ./data/db:/var/lib/postgresql/data
 
@@ -18,7 +15,7 @@ services:
   nginx:
     image: nginx:1.20-alpine
     env_file:
-      - env_files/cfg.env
+      - container_env_files/cfg.env
     volumes:
       - ./nginx/templates:/etc/nginx/templates
       - nginx-shared:${DOCKER_NGINX_VOLUME_ROOT}
@@ -27,14 +24,14 @@ services:
   cfg:
     image: gnosispm/safe-config-service
     env_file: 
-      - env_files/cfg.env
+      - container_env_files/cfg.env
 
   # Safe Client Gateway
   cgw:
-    image: gnosispm/safe-client-gateway
+    image: gnosispm/safe-client-gateway:v3.4.0
     env_file:
-      - env_files/cgw.env
-    environment:
-      - REDIS_URL=redis://redis
+      - container_env_files/cgw.env
     depends_on:
       - redis
+    ports:
+      - ${CGW_PORT}:2222
