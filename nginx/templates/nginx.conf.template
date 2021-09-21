@@ -1,0 +1,76 @@
+# https://github.com/KyleAMathews/docker-nginx/blob/master/nginx.conf
+# https://linode.com/docs/web-servers/nginx/configure-nginx-for-optimized-performance/
+# https://github.com/denji/nginx-tuning
+worker_processes auto;
+
+events {
+  worker_connections 10000;  # increase if you have lots of clients
+  # accept_mutex on;  # set to 'on' if nginx worker_processes > 1
+  use epoll;  # to enable for Linux 2.6+
+}
+
+http {
+  include mime.types;
+  # fallback in case we can't determine a type
+  default_type application/octet-stream;
+  sendfile on;
+
+  upstream app_server {
+    ip_hash;  # For load-balancing
+    # server web:${GUNICORN_BIND_PORT} fail_timeout=0;
+    #
+    # fail_timeout=0 means we always retry an upstream even if it failed
+    # to return a good HTTP response
+    server ${GUNICORN_BIND_SOCKET} fail_timeout=0;
+    keepalive 32;
+  }
+
+  server {
+    access_log off;
+    listen 80;
+    charset utf-8;
+
+    keepalive_timeout 75s;
+    keepalive_requests 100000;
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+
+    gzip             on;
+    gzip_min_length 10000;
+    gzip_comp_level  6;
+
+    # text/html is always included by default
+    gzip_types text/plain text/css application/json application/javascript application/x-javascript text/javascript text/xml application/xml application/rss+xml application/atom+xml application/rdf+xml;
+    gzip_disable "MSIE [1-6]\.";
+
+    # allow the server to close connection on non responding client, this will free up memory
+    reset_timedout_connection on;
+
+    # Redirect http to https
+    if ($http_x_forwarded_proto = 'http') {
+      return 301 https://$host$request_uri;
+    }
+
+    location /static {
+          alias /nginx/staticfiles;
+          expires 365d;
+    }
+
+    location / {
+          proxy_pass http://app_server/;
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-Host $server_name;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header        X-Forwarded-Proto $http_x_forwarded_proto;
+          add_header              Front-End-Https   on;
+          # we don't want nginx trying to do something clever with
+          # redirects, we set the Host: header above already.
+          proxy_redirect off;
+          # They default to 60s. Increase to avoid WORKER TIMEOUT in web container
+          proxy_connect_timeout 60s;
+          proxy_read_timeout 60s;
+    }
+  }
+}
