@@ -6,32 +6,31 @@ volumes:
 services:
 
   # Safe Config Service
-  db:
-    image: postgres:13-alpine
-    env_file:
-      - container_env_files/cfg.env
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-
   nginx:
     image: nginx:1.20-alpine
     env_file:
       - container_env_files/cfg.env
+    ports:
+      - "${NGINX_HOST_PORT}:80"
     volumes:
       - ./nginx/templates:/etc/nginx/templates
       - nginx-shared:${DOCKER_NGINX_VOLUME_ROOT_CFG}
     depends_on:
-      - cfg
-    ports: 
-      - ${CFG_PORT}:80
+      - cfg-web
+  db:
+    image: postgres:13-alpine
+    env_file:
+      - .env
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
 
-  cfg:
+  cfg-web:
     image: gnosispm/safe-config-service:v2.1.0
     tty: true
     volumes:
       - nginx-shared:${DOCKER_NGINX_VOLUME_ROOT_CFG}
-    env_file: 
-      - container_env_files/cfg.env  
+    env_file:
+      - container_env_files/cfg.env
     depends_on:
       - db
   
