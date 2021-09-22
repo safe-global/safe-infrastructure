@@ -1,24 +1,19 @@
 version: '3.9'
   
 volumes:
-  nginx-shared:
+  nginx-shared-txs:
+  nginx-shared-cfg:
 
 services:
 
   # Safe Transaction Service
-  hardhat:
-    image: ethereumoptimism/hardhat:latest
-    ports:
-      - 8545:8545
-
   nginx-txs:
     image: nginx:alpine
-    hostname: nginx
     ports:
       - ${TXS_PORT}:8000
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - nginx-shared:/nginx
+      - nginx-shared-txs:/nginx
     depends_on:
       - txs
 
@@ -41,7 +36,7 @@ services:
     ports:
       - 8888:8888
     volumes:
-      - nginx-shared:/nginx
+      - nginx-shared-txs:/nginx
     command: docker/web/run_web.sh
 
   worker: &worker
@@ -66,7 +61,7 @@ services:
       - "${NGINX_HOST_PORT}:80"
     volumes:
       - ./nginx/templates:/etc/nginx/templates
-      - nginx-shared:${DOCKER_NGINX_VOLUME_ROOT_CFG}
+      - nginx-shared-cfg:/nginx
     depends_on:
       - cfg-web
   
@@ -81,7 +76,7 @@ services:
     image: gnosispm/safe-config-service:${CFG_VERSION}
     tty: true
     volumes:
-      - nginx-shared:${DOCKER_NGINX_VOLUME_ROOT_CFG}
+      - nginx-shared-cfg:/nginx
     env_file:
       - container_env_files/cfg.env
     depends_on:
