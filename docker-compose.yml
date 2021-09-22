@@ -15,12 +15,12 @@ services:
     image: nginx:alpine
     hostname: nginx
     ports:
-      - "8001:8001"
+      - ${TXS_PORT}:8001
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - nginx-shared:/nginx
     depends_on:
-      - web
+      - txs
 
   redis-txs:
     image: redis:alpine
@@ -30,8 +30,8 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
 
-  web:
-    image: gnosispm/safe-transaction-service:v3.2.3 
+  txs:
+    image: gnosispm/safe-transaction-service:${TXS_VERSION}
     env_file:
       - container_env_files/txs.env
     depends_on:
@@ -39,13 +39,13 @@ services:
       - redis-txs
     working_dir: /app
     ports:
-      - ${TXS_PORT}:8888
+      - 8888:8888
     volumes:
       - nginx-shared:/nginx
     command: docker/web/run_web.sh
 
   worker: &worker
-    image: gnosispm/safe-transaction-service:v3.2.3 
+    image: gnosispm/safe-transaction-service:${TXS_VERSION}
     env_file:
       - container_env_files/txs.env
     depends_on:
