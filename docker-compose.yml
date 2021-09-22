@@ -15,7 +15,7 @@ services:
     image: nginx:alpine
     hostname: nginx
     ports:
-      - ${TXS_PORT}:8001
+      - ${TXS_PORT}:8000
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - nginx-shared:/nginx
