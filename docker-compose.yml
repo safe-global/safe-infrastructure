@@ -5,6 +5,9 @@ volumes:
 
 services:
 
+  # Safe Transaction Service
+
+
   # Safe Config Service
   nginx:
     image: nginx:1.20-alpine
@@ -17,15 +20,16 @@ services:
       - nginx-shared:${DOCKER_NGINX_VOLUME_ROOT_CFG}
     depends_on:
       - cfg-web
+  
   db:
     image: postgres:13-alpine
     env_file:
-      - .env
+      - container_env_files/cfg.env
     volumes:
       - ./data/db:/var/lib/postgresql/data
 
   cfg-web:
-    image: gnosispm/safe-config-service:v2.1.0
+    image: gnosispm/safe-config-service:${CFG_VERSION}
     tty: true
     volumes:
       - nginx-shared:${DOCKER_NGINX_VOLUME_ROOT_CFG}
@@ -39,7 +43,7 @@ services:
     image: redis:5-alpine
 
   cgw:
-    image: gnosispm/safe-client-gateway:v3.4.0
+    image: gnosispm/safe-client-gateway:${CGW_VERSION}
     env_file:
       - container_env_files/cgw.env
     depends_on:
