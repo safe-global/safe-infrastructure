@@ -10,12 +10,12 @@ services:
   nginx-txs:
     image: nginx:alpine
     ports:
-      - ${TXS_PORT}:8000 # TXS_PORT needs to be renamed to REVERSE_PROXY_PORT or something
+      - "${REVERSE_PROXY_PORT}:8000"
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - nginx-shared-txs:/nginx
     depends_on:
-      - txs-web, cfg-web
+      - txs-web, cfg-web, cgw-web
 
   redis-txs:
     image: redis:alpine
@@ -35,8 +35,6 @@ services:
       - db-txs
       - redis-txs
     working_dir: /app
-    ports:
-      - 8888:8888
     volumes:
       - nginx-shared-txs:/nginx
     command: docker/web/run_web.sh
@@ -71,8 +69,6 @@ services:
       - nginx-shared-cfg:/nginx
     env_file:
       - container_env_files/cfg.env
-    environment:
-      - NGINX_HOST_PORT=${CFG_PORT}
     depends_on:
       - db
   
@@ -86,5 +82,5 @@ services:
       - container_env_files/cgw.env
     depends_on:
       - redis
-    ports:
-      - ${CGW_PORT}:3666
+    ports: 
+      - "3666"
