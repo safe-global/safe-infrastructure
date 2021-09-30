@@ -10,12 +10,12 @@ services:
   nginx-txs:
     image: nginx:alpine
     ports:
-      - ${TXS_PORT}:8000
+      - ${TXS_PORT}:8000 # TXS_PORT needs to be renamed to REVERSE_PROXY_PORT or something
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - nginx-shared-txs:/nginx
     depends_on:
-      - txs, cfg-web
+      - txs-web, cfg-web
 
   redis-txs:
     image: redis:alpine
@@ -57,18 +57,6 @@ services:
     command: docker/web/celery/scheduler/run.sh  
 
   # Safe Config Service
-  nginx:
-    image: nginx:1.20-alpine
-    env_file:
-      - container_env_files/cfg.env
-    ports:
-      - "${CFG_PORT}:80"
-    volumes:
-      - ./nginx/templates:/etc/nginx/templates
-      - nginx-shared-cfg:/nginx
-    depends_on:
-      - cfg-web
-  
   db:
     image: postgres:13-alpine
     env_file:
@@ -92,7 +80,7 @@ services:
   redis:
     image: redis:5-alpine
 
-  cgw:
+  cgw-web:
     image: gnosispm/safe-client-gateway:${CGW_VERSION}
     env_file:
       - container_env_files/cgw.env
