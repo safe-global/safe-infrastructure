@@ -6,8 +6,7 @@ volumes:
 
 services:
 
-  # Safe Transaction Service
-  nginx-txs:
+  nginx:
     image: nginx:alpine
     ports:
       - "${REVERSE_PROXY_PORT}:8000"
@@ -17,6 +16,7 @@ services:
     depends_on:
       - txs-web, cfg-web, cgw-web
 
+  # Safe Transaction Service
   redis-txs:
     image: redis:alpine
 
