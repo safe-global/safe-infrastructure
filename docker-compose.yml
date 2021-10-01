@@ -74,7 +74,7 @@ services:
   
   # Safe Client Gateway
   redis:
-    image: redis:5-alpine
+    image: redis:6-alpine
 
   cgw-web:
     image: gnosispm/safe-client-gateway:${CGW_VERSION}
