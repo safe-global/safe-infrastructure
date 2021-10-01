@@ -1,29 +1,35 @@
-version: '3.9'
-  
+version: '3.8'
+
 volumes:
   nginx-shared-txs:
   nginx-shared-cfg:
 
 services:
 
+  # Common nginx and database
   nginx:
     image: nginx:alpine
     ports:
       - "${REVERSE_PROXY_PORT}:8000"
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - nginx-shared-txs:/nginx
+      - nginx-shared-txs:/nginx-txs
+      - nginx-shared-cfg:/nginx-cfg
     depends_on:
-      - txs-web, cfg-web, cgw-web
+      - txs-web
+      - cfg-web
+      - cgw-web
 
-  # Safe Transaction Service
-  redis-txs:
-    image: redis:alpine
-
-  db-txs:
+  db:
     image: postgres:10-alpine
     environment:
       POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+
+  # Safe Transaction Service
+  txs-redis:
+    image: redis:alpine
 
   txs-web:
     image: gnosispm/safe-transaction-service:${TXS_VERSION}
@@ -32,36 +38,29 @@ services:
     environment:
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
     depends_on:
-      - db-txs
-      - redis-txs
+      - db
+      - txs-redis
     working_dir: /app
     volumes:
       - nginx-shared-txs:/nginx
     command: docker/web/run_web.sh
 
-  worker: &worker
+  txs-worker: &worker
     image: gnosispm/safe-transaction-service:${TXS_VERSION}
     env_file:
       - container_env_files/txs.env
     environment:
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
     depends_on:
-      - db-txs
-      - redis-txs
+      - db
+      - txs-redis
     command: docker/web/celery/worker/run.sh
 
-  scheduler:
+  txs-scheduler:
     <<: *worker
-    command: docker/web/celery/scheduler/run.sh  
+    command: docker/web/celery/scheduler/run.sh
 
   # Safe Config Service
-  db:
-    image: postgres:13-alpine
-    env_file:
-      - container_env_files/cfg.env
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-
   cfg-web:
     image: gnosispm/safe-config-service:${CFG_VERSION}
     tty: true
@@ -71,10 +70,10 @@ services:
       - container_env_files/cfg.env
     depends_on:
       - db
-  
+
   # Safe Client Gateway
   redis:
-    image: redis:6-alpine
+    image: redis:alpine
 
   cgw-web:
     image: gnosispm/safe-client-gateway:${CGW_VERSION}
@@ -82,5 +81,3 @@ services:
       - container_env_files/cgw.env
     depends_on:
       - redis
-    ports: 
-      - "3666"
