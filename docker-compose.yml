@@ -26,6 +26,8 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "5432"
 
   # Safe Transaction Service
   txs-redis:
