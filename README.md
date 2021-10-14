@@ -11,7 +11,7 @@ You can change them to the version you are interested available in [docker-hub](
 
 ### Step 0: docker refresher (optional)
 
-Building and running the whole setup can be sdon with the following commands: 
+Building and running the whole setup can be done with the following commands: 
 
 ```bash
 docker compose build --force-rm
@@ -26,7 +26,8 @@ We recommend using what is available in the `.env.sample` file as it contains ve
 cp .env.sample .env
 ```
 
-Simply, edit your `.env` and set `RPC_NODE_URL` to the chain you want the services running agains. **Important Note:** Only L2 safes are supported in the setup provided. Change this at your own risk. 
+Simply, edit your `.env` and set `RPC_NODE_URL` to the chain you want the services running against. 
+**Important Note:** Only L2 safes are supported in the setup provided. Change this at your own risk. 
 
 
 ### Step 2: Setup djando superusers
