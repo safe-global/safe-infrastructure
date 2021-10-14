@@ -26,8 +26,6 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    ports:
-      - "5432"
 
   # Safe Transaction Service
   txs-redis:
@@ -74,7 +72,7 @@ services:
       - db
 
   # Safe Client Gateway
-  redis:
+  cgw-redis:
     image: redis:alpine
 
   cgw-web:
@@ -82,4 +80,4 @@ services:
     env_file:
       - container_env_files/cgw.env
     depends_on:
-      - redis
+      - cgw-redis
