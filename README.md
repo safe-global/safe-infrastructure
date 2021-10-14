@@ -40,7 +40,7 @@ docker exec -it safe-infrastructure_txs-redis_1 redis-cli
 docker exec -it safe-infrastructure_db_1 psql -U postgres
 ```
 
-## Step 1: setup your .env
+## Step 1: setup your `.env`
 
 We recommend using what is available in the `.env.sample` file as it contains versions of our services guaranteed to be compatible with each other: 
 
@@ -95,4 +95,29 @@ python manage.py loaddata chain.json
 
 ## Step 4: Add your webhooks
 
-//TODO 
+Our services invalidate the caches of the client gateway using webhooks. Both the Config and Transaction service need to be configured. For the Config service, unless you've changed the values in `cgw.env` and `cfg.env` then you don't need to do anything, otherwise:
+
+```bash
+
+# Inside the file "container_env_files/cfg.env"
+#...
+CGW_URL=http://127.0.0.1
+CGW_FLUSH_TOKEN=some_random_token
+
+# Inside the file "container_env_files/cgw.env"
+WEBHOOK_TOKEN=some_random_token
+```
+
+`WEBHOOK_TOKEN` and `CGW_FLUSH_TOKEN` must be the same.
+
+For the Transactions service open a terminal in the container:
+
+```bash
+docker exec -it safe-infrastructure_txs-web_1 bash
+```
+
+Then use `manage.py` and the custom command for adding a webhook like so:
+
+```bash
+python manage.py add_webhook --url=http://nginx:8000/cgw/v1/hook/update/some_random_token
+```
