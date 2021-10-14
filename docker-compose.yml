@@ -72,7 +72,7 @@ services:
       - db
 
   # Safe Client Gateway
-  redis:
+  cgw-redis:
     image: redis:alpine
 
   cgw-web:
@@ -80,4 +80,4 @@ services:
     env_file:
       - container_env_files/cgw.env
     depends_on:
-      - redis
+      - cgw-redis

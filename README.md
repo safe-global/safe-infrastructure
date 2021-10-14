@@ -30,7 +30,7 @@ docker exec -it safe-infrastructure_txs-web_1 bash
 - Accessing `redis-cli` in either redis can be achieved like so"
 
 ```bash
-docker exec -it safe-infrastructure_redis_1 redis-cli
+docker exec -it safe-infrastructure_cgw-redis_1 redis-cli
 docker exec -it safe-infrastructure_txs-redis_1 redis-cli
 ```
 
