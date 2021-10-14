@@ -32,7 +32,23 @@ Simply, edit your `.env` and set `RPC_NODE_URL` to the chain you want the servic
 
 ### Step 2: Setup djando superusers
 
-//TODO 
+You will need to identify the ID or name of the containers using `docker ps`. To create the default super user for the Safe Config Service, we run the following command:
+
+```bash
+docker exec safe-infrastructure_cfg-web_1 python src/manage.py createsuperuser --noinput
+```
+
+You can now access http://localhost:8000/cfg/admin/ and login using the credentials `root/admin`.
+
+To achieve the same for the Safe Transaction service: 
+
+```bash
+docker exec safe-infrastructure_txs-web_1 python manage.py createsuperuser --noinput
+```
+
+Note 1: note that the path to `manage.py` is different. In case you need to run other commands.
+
+Note 2: remember to replace your container ID or name.
 
 ### Step 3: Add your `ChainInfo`
 
