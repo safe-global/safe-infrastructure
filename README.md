@@ -101,7 +101,7 @@ Our services invalidate the caches of the client gateway using webhooks. Both th
 
 # Inside the file "container_env_files/cfg.env"
 #...
-CGW_URL=http://127.0.0.1
+CGW_URL=http://nginx:8000/cgw
 CGW_FLUSH_TOKEN=some_random_token
 
 # Inside the file "container_env_files/cgw.env"
