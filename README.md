@@ -121,3 +121,7 @@ Then use `manage.py` and the custom command for adding a webhook like so:
 ```bash
 python manage.py add_webhook --url=http://nginx:8000/cgw/v1/hook/update/some_random_token
 ```
+
+4. Access the UI
+You can now access to the Gnosis Safe Web UI at http://localhost:3000
+

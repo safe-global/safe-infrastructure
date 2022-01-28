@@ -81,3 +81,12 @@ services:
       - container_env_files/cgw.env
     depends_on:
       - cgw-redis
+
+  ui:
+    image: gnosispm/safe-react:latest
+    env_file:
+      - container_env_files/ui.env
+    depends_on:
+      - nginx
+    ports:
+      - 3000:3000
