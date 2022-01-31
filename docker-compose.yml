@@ -83,10 +83,10 @@ services:
       - cgw-redis
 
   ui:
-    image: gnosispm/safe-react:latest
+    image: gnosispm/safe-react
     env_file:
       - container_env_files/ui.env
     depends_on:
       - nginx
     ports:
-      - 3000:3000
+      - "${REVERSE_PROXY_UI_PORT}:3000"
