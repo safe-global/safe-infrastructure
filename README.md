@@ -42,10 +42,10 @@ docker exec -it safe-infrastructure_db_1 psql -U postgres
 
 ## Step 1: setup your `.env`
 
-We recommend using what is available in the `.env.example` file as it contains versions of our services guaranteed to be compatible with each other:
+We recommend using what is available in the `.env.sample` file as it contains versions of our services guaranteed to be compatible with each other:
 
 ```bash
-cp .env.example .env
+cp .env.sample .env
 ```
 
 Simply, edit your `.env` and set `RPC_NODE_URL` to the chain you want the services running against.
