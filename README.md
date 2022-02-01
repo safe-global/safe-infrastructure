@@ -123,5 +123,5 @@ python manage.py add_webhook --url=http://nginx:8000/cgw/v1/hook/update/some_ran
 ```
 
 4. Access the UI
-You can now access to the Gnosis Safe Web UI at http://localhost:8080. Port can be configured on `.env`
+You can then access to the Gnosis Safe Web UI at http://localhost:8080. Port can be configured on `.env`
 
