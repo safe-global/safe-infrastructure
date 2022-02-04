@@ -76,22 +76,9 @@ Note 2: remember to replace your container ID or name.
 
 We need to be able to define a `ChainInfo` object in the Safe Config service so that the Client Gateway knows the URL of the Safe Transaction service instance it needs to request against for a given safe.
 
-In order to do this, we need to use `manage.py` from the Safe Config serivce. We start an interactive console like so:
+You can do this in the admin interface of the Safe Config service: `http://localhost:8000/cfg/admin/chains/chain/add/`
 
-```bash
-docker exec -it safe-infrastructure_cfg-web_1 bash
-```
-Once inside the container, you have to define the object in the database. You can find an example for `Rinkeby` in this repository in the file `json/rinkeby.json`.
-
-Now follow these steps:
-1. Put the json of your `ChainInfo` in your clipboard (`cmd + c` or `ctrl + c`), you can use the contents of `json/rinkeby.json` if you are setting up for rinkeby. Otherwise, be aware that the field `pk` in the json needs to correspond to the `chain_id`
-2. In your terminal where you have `docker exec -it` running paste the following:
-```bash
-cd src # this is where your "manage.py" file will be located
-echo '<the json for your ChainInfo>' > chain.json
-python manage.py loaddata chain.json
-```
-3. Verify that your `ChainInfo` was successfully added by going to `http://localhost:8000/cfg/api/v1/chains`.
+You can verify that your `ChainInfo` was successfully added by going to `http://localhost:8000/cfg/api/v1/chains`.
 
 ## Step 4: Add your webhooks
 
