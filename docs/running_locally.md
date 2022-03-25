@@ -11,21 +11,31 @@ cp .env.sample .env
 Simply, edit your `.env` and set `RPC_NODE_URL` to the chain you want the services running against.
 **Important Note:** Only L2 safes are supported in the setup provided. Change this at your own risk.
 
+Now you should be able to run
+
+```bash
+docker compose up
+```
 
 ## Step 2: Setup djando superusers
 
 You will need to identify the ID or name of the containers using `docker ps`. To create the default super user for the Safe Config Service, we run the following command:
 
 ```bash
-docker exec safe-infrastructure_cfg-web_1 python src/manage.py createsuperuser --noinput
+docker exec safe-infrastructure-cfg-web-1 python src/manage.py createsuperuser --noinput
 ```
 
+and then
+
+```bash
+docker exec safe-infrastructure-cfg-web-1 python src/manage.py addstatictoken root
+```
 You can now access http://localhost:8000/cfg/admin/ and login using the credentials `root/admin`.
 
 To achieve the same for the Safe Transaction service:
 
 ```bash
-docker exec safe-infrastructure_txs-web_1 python manage.py createsuperuser --noinput
+docker exec safe-infrastructure-txs-web-1 python manage.py createsuperuser --noinput --username root
 ```
 
 Note 1: note that the path to `manage.py` is different. In case you need to run other commands.
