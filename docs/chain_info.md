@@ -7,7 +7,7 @@ These objects contain information that coordinates the inter-service communicati
 
 At any point, if you see a value that you are unsure how to supply, just look at what's available in [production](https://safe-config.gnosis.io/api/v1/chains/) and change the values as you see fit.  
 
-These values are meant to be provided in the admin panel(http://localhost:8000/cfg/admin) of the CFG (Safe Config Service)
+These values are meant to be provided in the admin panel `http://localhost:8000/cfg/admin` of the CFG (Safe Config Service)
 
 ## Connecting the safe CGW to the Transaction Service (TXS)
 

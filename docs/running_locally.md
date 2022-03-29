@@ -71,17 +71,13 @@ WEBHOOK_TOKEN=some_random_token
 
 `WEBHOOK_TOKEN` and `CGW_FLUSH_TOKEN` must be the same.
 
-For the Transactions service open a terminal in the container:
+For the Transactions service, follow these steps:
+ - Access the admin panel at `http://localhost:8000/txs/admin`
+ - click the `Add` link for `Web hooks`
+ - Ignore the `Address` field
+ - Set the `Url` field to `http://nginx:8000/cgw/v1/chains/1/hooks/events`
+ - Set the `Authorization` field to `Basic <WEBHOOK_TOKEN>`, where `<WEBHOOK_TOKEN>` corresponds to the value of `WEBHOOK_TOKEN` in the `container_env_files/cgw.env` file of this repository
 
-```bash
-docker exec -it safe-infrastructure_txs-web_1 bash
-```
-
-Then use `manage.py` and the custom command for adding a webhook like so:
-
-```bash
-python manage.py add_webhook --url=http://nginx:8000/cgw/v1/hook/update/some_random_token
-```
 ### Accessing the Safe Web App
 
 The Gnosis Safe Web App will be available at at http://localhost:8080. Port can be configured on `.env` by modifying `REVERSE_PROXY_UI_PORT`
