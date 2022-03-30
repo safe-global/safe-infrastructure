@@ -4,7 +4,6 @@
 
 - `docker`
 - `docker compose`
-- (Optionally) `heroku CLI` if you want to deploy your image to your Heroku account
 
 ## Pinned versions
 
