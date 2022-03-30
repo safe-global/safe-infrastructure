@@ -4,8 +4,13 @@
 Building and running the whole setup can be done with the following commands:
 
 ```bash
-docker compose build --force-rm
 docker compose up
+```
+
+Just to build, once you've pulled the images
+
+```bash
+docker compose build --force-rm
 ```
 
 ## Bash access to web container

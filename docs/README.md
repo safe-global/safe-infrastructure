@@ -1,4 +1,12 @@
-# Safe Services Main Docker
+# Safe Infrastructure
+
+## Requirements
+
+- `docker`
+- `docker compose`
+- (Optionally) `heroku CLI` if you want to deploy your image to your Heroku account
+
+## Pinned versions
 
 This repository contains the minimum viable local setup for our backend services.
 The setup presented here, assumes that only L2 safes will be used. Additionally, we have tested this setup with the following versions:
@@ -11,4 +19,3 @@ You can change them to the version you are interested available in [docker-hub](
 
 - [Brief Docker Crash Course](docker_cheatsheet.md)
 - [Guide to run our services locally](running_locally.md)
-- [Guide to deploy a service instance to Heroku](prod_deployment.md)

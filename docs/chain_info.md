@@ -20,7 +20,7 @@ In order to achieve this, the CFG has 2 fields:
 
 We introduce these fields for being able to locally debug our services as a VPC (Virtual Private Cloud) URL has benefits in terms of request/response times. You can toggle the usafe of either URL, in the CGW, but for the purpose of this guide we will simply set these values to the same value:
 
-```json
+```javascript
 {
     // ...
     "vpc_transaction_service" : "http://nginx:8000/txs",
@@ -32,7 +32,7 @@ We introduce these fields for being able to locally debug our services as a VPC 
 
 For the web app to be able to render links correctly you need to supply URLs with templates that the web app will eventually use to build links to block explorers. For the sake of this guide, we will share the values for Etherscan Rinkeby:
 
-```json
+```javascript
 {
     // ...
     "address": "https://rinkeby.etherscan.io/address/{{address}}",

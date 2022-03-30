@@ -78,7 +78,7 @@ For the Transactions service, follow these steps:
  - Set the `Url` field to `http://nginx:8000/cgw/v1/chains/1/hooks/events`
  - Set the `Authorization` field to `Basic <WEBHOOK_TOKEN>`, where `<WEBHOOK_TOKEN>` corresponds to the value of `WEBHOOK_TOKEN` in the `container_env_files/cgw.env` file of this repository
 
-### Accessing the Safe Web App
+# Safe Web App
 
 The Gnosis Safe Web App will be available at at http://localhost:8080. Port can be configured on `.env` by modifying `REVERSE_PROXY_UI_PORT`
 
