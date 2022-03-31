@@ -10,9 +10,9 @@ And lastly, the Chain object also contains URL templates that indicate the front
 
 At any point, if you see a value that you are unsure how to supply, just look at what's available in [production](https://safe-config.gnosis.io/api/v1/chains/) and change the values as you see fit.  
 
-These values are meant to be provided in the admin panel `http://localhost:8000/cfg/admin` of the CFG (Safe Config Service)
+These values are meant to be provided in the admin panel `http://localhost:8000/cfg/admin` of the Safe Config Service (CFG)
 
-## Connecting the safe CGW to the Transaction Service (TXS)
+## Connecting the Safe Client Gateway (CGW) to the Safe Transaction Service (TXS)
 
 The CGW can forward requests to many independently running TXS instances pointing to different chains. The CFG has to keep a registry of every available instance of the TXS. 
 
