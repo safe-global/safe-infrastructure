@@ -25,11 +25,6 @@ You will need to identify the ID or name of the containers using `docker ps`. To
 docker exec safe-infrastructure-cfg-web-1 python src/manage.py createsuperuser --noinput
 ```
 
-and then
-
-```bash
-docker exec safe-infrastructure-cfg-web-1 python src/manage.py addstatictoken root
-```
 You can now access http://localhost:8000/cfg/admin/ and login using the credentials `root/admin`.
 
 To achieve the same for the Safe Transaction service:

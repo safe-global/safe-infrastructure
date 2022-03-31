@@ -21,7 +21,9 @@ In order to achieve this, the CFG has 2 fields:
 - `vpc_transaction_service`
 - `transaction_service`
 
-We introduce these fields for being able to locally debug our services as a VPC (Virtual Private Cloud) URL has benefits in terms of request/response times. You can toggle the usafe of either URL, in the CGW, but for the purpose of this guide we will simply set these values to the same value:
+These two fields are required, because in a production setup, you would have your services potentically located in the same Virtual Private Cloud (VPC) setup. Then you could go as far as making the TXS private and hide it from requests coming from outside your cluster. 
+Should this be the case, you can set the value to `false` of [this](https://github.com/gnosis/safe-client-gateway/blob/6e3fa0d5770d185bb0cbe27185d6b33641143b2e/.env.sample#L37) env var in your CGW `.env` [file](container_env_files/cgw.env). 
+For the purpose of this guide we will simply set these values to the same value:
 
 ```javascript
 {
@@ -44,3 +46,5 @@ For the web app to be able to render links correctly you need to supply URLs wit
     // ...
 }
 ```
+
+The `{{address}}` (Ethereum address `0x` prefixed) and `{{txHash}}` (transaction hash) are markers in the URL acting as placeholders that the Safe web app will use to replace values to construct links to block explorer corresponding to that chain. It is important that you indicate these correctly so links are valid at the moment of rendering.
