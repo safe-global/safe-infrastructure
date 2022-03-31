@@ -2,8 +2,11 @@
 
 ## Intro
 
-This correct definition of these objects is instrumental to the correct behaviour of our services and web app.
-These objects contain information that coordinates the inter-service communication as well as template URLs that allows the frontend to render links to block explorers correctly. These features will be explained in this doc.
+The Chain object represents metadata specific to a chain. Its metadata is crucial to not only have a the correct information displayed to the users (chain name, chain logo, native currency, etc...) but also to communicate with the correct instance of the Safe Transaction Service (Transaction Service URI and VPC Transaction Service URI)
+
+The Chain object also contains data which is used specifically in the context of the Safe Web App and the Safe Mobile apps. This data is used mostly for rendering purposes like currency logo, background colours, etc. This data is required but affect only the visual components of the client application. 
+
+And lastly, the Chain object also contains URL templates that indicate the frontend apps how to parse and compose URLs to block explorers. This will be discussed in more detail later on.
 
 At any point, if you see a value that you are unsure how to supply, just look at what's available in [production](https://safe-config.gnosis.io/api/v1/chains/) and change the values as you see fit.  
 

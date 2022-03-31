@@ -2,8 +2,7 @@
 
 ## Requirements
 
-- `docker`
-- `docker compose`
+- `docker compose` (installation [guide](https://docs.docker.com/compose/install/))
 
 ## Pinned versions
 
