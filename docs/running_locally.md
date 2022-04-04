@@ -1,44 +1,4 @@
-# Safe Services Main Docker
-
-This repository contains the minimum viable local setup for our backend services.
-The setup presented here, assumes that only L2 safes will be used. Additionally, we have tested this setup with the following versions:
-
-- `CFG_VERSION=v2.12.0`
-- `CGW_VERSION=v3.19.1`
-- `TXS_VERSION=v4.2.8`
-
-You can change them to the version you are interested available in [docker-hub](https://hub.docker.com/u/gnosispm) but be aware that not all versions of our services are compatible with each other, so do so **at your own risk.**
-
-## Step 0: docker crash course (optional)
-
-Building and running the whole setup can be done with the following commands:
-
-```bash
-docker compose build --force-rm
-docker compose up
-```
-
-- Accessing `bash` in your web containers can be achieved by:
-
-```bash
-docker exec -it safe-infrastructure_cfg-web_1 bash
-docker exec -it safe-infrastructure_txs-web_1 bash
-```
-
-`Ctrl+d` will end interactive mode.
-
-- Accessing `redis-cli` in either redis can be achieved like so"
-
-```bash
-docker exec -it safe-infrastructure_cgw-redis_1 redis-cli
-docker exec -it safe-infrastructure_txs-redis_1 redis-cli
-```
-
-- Accessing `postgres`. The Safe Config and Safe transaction services share the same instance
-
-```bash
-docker exec -it safe-infrastructure_db_1 psql -U postgres
-```
+# Running our services locally
 
 ## Step 1: setup your `.env`
 
@@ -51,13 +11,18 @@ cp .env.sample .env
 Simply, edit your `.env` and set `RPC_NODE_URL` to the chain you want the services running against.
 **Important Note:** Only L2 safes are supported in the setup provided. Change this at your own risk.
 
+Now you should be able to run
 
-## Step 2: Setup djando superusers
+```bash
+docker compose up
+```
+
+## Step 2: Setup Django superusers
 
 You will need to identify the ID or name of the containers using `docker ps`. To create the default super user for the Safe Config Service, we run the following command:
 
 ```bash
-docker exec safe-infrastructure_cfg-web_1 python src/manage.py createsuperuser --noinput
+docker exec safe-infrastructure-cfg-web-1 python src/manage.py createsuperuser --noinput
 ```
 
 You can now access http://localhost:8000/cfg/admin/ and login using the credentials `root/admin`.
@@ -65,7 +30,7 @@ You can now access http://localhost:8000/cfg/admin/ and login using the credenti
 To achieve the same for the Safe Transaction service:
 
 ```bash
-docker exec safe-infrastructure_txs-web_1 python manage.py createsuperuser --noinput
+docker exec safe-infrastructure-txs-web-1 python manage.py createsuperuser --noinput --username root
 ```
 
 Note 1: note that the path to `manage.py` is different. In case you need to run other commands.
@@ -79,6 +44,10 @@ We need to be able to define a `ChainInfo` object in the Safe Config service so 
 You can do this in the admin interface of the Safe Config service: `http://localhost:8000/cfg/admin/chains/chain/add/`
 
 You can verify that your `ChainInfo` was successfully added by going to `http://localhost:8000/cfg/api/v1/chains`.
+
+Remember to edit your `ChainInfo` json fields `transaction_service_uri` and `vpc_transaction_service_uri` to point to your local instance of the transaction service. The values should be `http://nginx:8000/txs`
+
+Check this [section](chain_info.md) for a more complete guide on the fields for `ChainInfo`.
 
 ## Step 4: Add your webhooks
 
@@ -97,18 +66,18 @@ WEBHOOK_TOKEN=some_random_token
 
 `WEBHOOK_TOKEN` and `CGW_FLUSH_TOKEN` must be the same.
 
-For the Transactions service open a terminal in the container:
+For the Transactions service, follow these steps:
+ - Access the admin panel at `http://localhost:8000/txs/admin`
+ - click the `Add` link for `Web hooks`
+ - Ignore the `Address` field
+ - Set the `Url` field to `http://nginx:8000/cgw/v1/chains/1/hooks/events`
+ - Set the `Authorization` field to `Basic <WEBHOOK_TOKEN>`, where `<WEBHOOK_TOKEN>` corresponds to the value of `WEBHOOK_TOKEN` in the `container_env_files/cgw.env` file of this repository
 
-```bash
-docker exec -it safe-infrastructure_txs-web_1 bash
-```
+# Safe Web App
 
-Then use `manage.py` and the custom command for adding a webhook like so:
+The Gnosis Safe Web app will be available at at http://localhost:8080 although check the output of `docker compose` to see that the container is already running, as in some step-ups, it can take longer than expected.
 
-```bash
-python manage.py add_webhook --url=http://nginx:8000/cgw/v1/hook/update/some_random_token
-```
+To configure the port in which the Safe Web app will be reachable, look into our sample [.env](.env.sample) file. The value of `REVERSE_PROXY_UI_PORT` defines this.
 
-4. Access the UI
-You can then access to the Gnosis Safe Web UI at http://localhost:8080. Port can be configured on `.env`
+Additionally, the Safe Web app itself, defines which instance of the Safe CGW to use in this [container_env_files/ui.env](container_env_files/ui.env) file. The value of `REACT_APP_GATEWAY_URL` defines the URL where the Safe CGW can be reached. The default in this repo, points to the instance running as part of the `docker-compose.yml` file, but can be adjusted to point to our production instances, or your own hosted instance.
 
