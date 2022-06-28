@@ -20,12 +20,20 @@ services:
       - cfg-web
       - cgw-web
 
-  db:
+  txs-db:
     image: postgres:10-alpine
     environment:
       POSTGRES_PASSWORD: postgres
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./data/txs-db:/var/lib/postgresql/data
+
+  cfg-db:
+    image: postgres:10-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./data/cfg-db:/var/lib/postgresql/data
+
 
   # Safe Transaction Service
   txs-redis:
@@ -41,40 +49,38 @@ services:
     environment:
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
     depends_on:
-      - db
+      - txs-db
       - txs-redis
     working_dir: /app
     volumes:
       - nginx-shared-txs:/nginx
     command: docker/web/run_web.sh
 
-  txs-worker: &worker
+  txs-worker-indexer: &txs-worker
     image: gnosispm/safe-transaction-service:${TXS_VERSION}
     env_file:
       - container_env_files/txs.env
     environment:
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
       - RUN_MIGRATIONS=1
-      - WORKER_QUEUES="default,indexing"
+      - WORKER_QUEUES=default,indexing
     depends_on:
-      - db
+      - txs-db
       - txs-redis
     command: docker/web/celery/worker/run.sh
 
-  contracts-tokens-worker:
-    <<: *worker
+  txs-worker-contracts-tokens:
+    <<: *txs-worker
     environment:
-      - ETHEREUM_NODE_URL=${RPC_NODE_URL}
-      - WORKER_QUEUES="contracts,tokens"
+      - WORKER_QUEUES=contracts,tokens
 
-  notifications-webhooks-worker:
-    <<: *worker
+  txs-worker-notifications-webhooks:
+    <<: *txs-worker
     environment:
-      - ETHEREUM_NODE_URL=${RPC_NODE_URL}
-      - WORKER_QUEUES="notifications,webhooks"
+      - WORKER_QUEUES=notifications,webhooks
 
   txs-scheduler:
-    <<: *worker
+    <<: *txs-worker
     command: docker/web/celery/scheduler/run.sh
 
   # Safe Config Service
@@ -86,7 +92,7 @@ services:
     env_file:
       - container_env_files/cfg.env
     depends_on:
-      - db
+      - cfg-db
 
   # Safe Client Gateway
   cgw-redis:
