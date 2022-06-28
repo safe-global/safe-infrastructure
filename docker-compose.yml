@@ -54,10 +54,24 @@ services:
       - container_env_files/txs.env
     environment:
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
+      - RUN_MIGRATIONS=1
+      - WORKER_QUEUES="default,indexing"
     depends_on:
       - db
       - txs-redis
     command: docker/web/celery/worker/run.sh
+
+  contracts-tokens-worker:
+    <<: *worker
+    environment:
+      - ETHEREUM_NODE_URL=${RPC_NODE_URL}
+      - WORKER_QUEUES="contracts,tokens"
+
+  notifications-webhooks-worker:
+    <<: *worker
+    environment:
+      - ETHEREUM_NODE_URL=${RPC_NODE_URL}
+      - WORKER_QUEUES="notifications,webhooks"
 
   txs-scheduler:
     <<: *worker
