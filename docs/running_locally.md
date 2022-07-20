@@ -22,7 +22,7 @@ docker compose up
 You will need to identify the ID or name of the containers using `docker ps`. To create the default super user for the Safe Config Service, we run the following command:
 
 ```bash
-docker exec safe-infrastructure-cfg-web-1 python src/manage.py createsuperuser --noinput
+docker compose exec cfg-web python src/manage.py createsuperuser --noinput
 ```
 
 You can now access http://localhost:8000/cfg/admin/ and login using the credentials `root/admin`.
@@ -30,12 +30,10 @@ You can now access http://localhost:8000/cfg/admin/ and login using the credenti
 To achieve the same for the Safe Transaction service:
 
 ```bash
-docker exec safe-infrastructure-txs-web-1 python manage.py createsuperuser --noinput --username root
+docker compose exec txs-web python manage.py createsuperuser --noinput --username root
 ```
 
 Note 1: note that the path to `manage.py` is different. In case you need to run other commands.
-
-Note 2: remember to replace your container ID or name.
 
 ## Step 3: Add your `ChainInfo`
 
