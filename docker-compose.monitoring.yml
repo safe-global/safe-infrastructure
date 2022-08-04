@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  txs-flower:
+    image: gnosispm/safe-transaction-service:${TXS_VERSION}
+    env_file:
+      - container_env_files/txs.env
+    depends_on:
+      - txs-db
+      - txs-redis
+    command: docker/web/celery/flower/run.sh
+    ports:
+      - "5555:5555"
