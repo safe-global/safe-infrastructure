@@ -1,5 +1,13 @@
 # Running our services locally
 
+## (Optionally) Run the automated script
+We provide a script to automate steps 1 and 2, if you want to use it, simply do:
+```
+cd scripts
+sh run_locally.sh
+```
+After this, you can skip steps 1 and 2, and you can go directly to step 3.
+
 ## Step 1: setup your `.env`
 
 We recommend using what is available in the `.env.sample` file as it contains versions of our services guaranteed to be compatible with each other:

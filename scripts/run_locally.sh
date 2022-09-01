@@ -20,4 +20,4 @@ docker compose up -d \
   && docker compose exec txs-web python manage.py createsuperuser \
   || exit
 
-echo "==> $(date +%H:%M:%S) ==> All set! You may want to add a ChainInfo into the Config service. Please use the link below to fill its data: "
+echo "==> $(date +%H:%M:%S) ==> All set! You may want to add a ChainInfo into the Config service. Please use the link below to fill its data: http://localhost:8000/cfg/admin/chains/chain/add/"
