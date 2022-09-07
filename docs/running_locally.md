@@ -1,13 +1,5 @@
 # Running our services locally
 
-## (Optionally) Run the automated script
-We provide a script to automate steps 1 and 2, if you want to use it, simply do:
-```
-cd scripts
-sh run_locally.sh
-```
-After this, you can skip steps 1 and 2, and you can go directly to step 3.
-
 ## Step 1: setup your `.env`
 
 We recommend using what is available in the `.env.sample` file as it contains versions of our services guaranteed to be compatible with each other:
@@ -19,13 +11,20 @@ cp .env.sample .env
 Simply, edit your `.env` and set `RPC_NODE_URL` to the chain you want the services running against.
 **Important Note:** Only L2 safes are supported in the setup provided. Change this at your own risk.
 
-Now you should be able to run
+## Step 2: Setup Django superusers
 
+### Option #1 - Automated way
+We provide a script to automate this second step, if you want to use it, simply write:
+```
+cd scripts
+sh run_locally.sh
+```
+
+### Option #2 - Manual way
+Start Docker containers:
 ```bash
 docker compose up
 ```
-
-## Step 2: Setup Django superusers
 
 You will need to identify the ID or name of the containers using `docker ps`. To create the default super user for the Safe Config Service, we run the following command:
 
