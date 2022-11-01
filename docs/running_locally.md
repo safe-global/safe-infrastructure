@@ -75,7 +75,7 @@ For the Transactions service, follow these steps:
  - Access the admin panel at `http://localhost:8000/txs/admin`
  - click the `Add` link for `Web hooks`
  - Ignore the `Address` field
- - Set the `Url` field to `http://nginx:8000/cgw/v1/chains/1/hooks/events`
+ - Set the `Url` field to `http://nginx:8000/cgw/v1/chains/{chainId}/hooks/events` and replace `{chainId}` with the corresponding chainId
  - Set the `Authorization` field to `Basic <WEBHOOK_TOKEN>`, where `<WEBHOOK_TOKEN>` corresponds to the value of `WEBHOOK_TOKEN` in the `container_env_files/cgw.env` file of this repository
 
 # Safe Web App
