@@ -43,7 +43,7 @@ services:
     image: rabbitmq:alpine
 
   txs-web:
-    image: gnosispm/safe-transaction-service:${TXS_VERSION}
+    image: safeglobal/safe-transaction-service:${TXS_VERSION}
     env_file:
       - container_env_files/txs.env
     environment:
@@ -57,7 +57,7 @@ services:
     command: docker/web/run_web.sh
 
   txs-worker-indexer: &txs-worker
-    image: gnosispm/safe-transaction-service:${TXS_VERSION}
+    image: safeglobal/safe-transaction-service:${TXS_VERSION}
     env_file:
       - container_env_files/txs.env
     environment:
@@ -85,7 +85,7 @@ services:
 
   # Safe Config Service
   cfg-web:
-    image: gnosispm/safe-config-service:${CFG_VERSION}
+    image: safeglobal/safe-config-service:${CFG_VERSION}
     tty: true
     volumes:
       - nginx-shared-cfg:/nginx
@@ -99,14 +99,14 @@ services:
     image: redis:alpine
 
   cgw-web:
-    image: gnosispm/safe-client-gateway:${CGW_VERSION}
+    image: safeglobal/safe-client-gateway:${CGW_VERSION}
     env_file:
       - container_env_files/cgw.env
     depends_on:
       - cgw-redis
 
   ui:
-    image: gnosispm/safe-react
+    image: safeglobal/safe-react
     env_file:
       - container_env_files/ui.env
     depends_on:
