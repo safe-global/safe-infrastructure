@@ -17,8 +17,8 @@ docker compose build --force-rm
 Accessing `bash` in your web containers can be achieved by:
 
 ```bash
-docker exec -it safe-infrastructure_cfg-web_1 bash
-docker exec -it safe-infrastructure_txs-web_1 bash
+docker compose exec -it cfg-web bash
+docker compose exec -it txs-web bash
 ```
 
 `Ctrl+d` will end interactive mode.
@@ -27,13 +27,14 @@ docker exec -it safe-infrastructure_txs-web_1 bash
 Accessing `redis-cli` in either redis can be achieved like so"
 
 ```bash
-docker exec -it safe-infrastructure_cgw-redis_1 redis-cli
-docker exec -it safe-infrastructure_txs-redis_1 redis-cli
+docker compose exec -it cgw-redis redis-cli
+docker compose exec -it txs-redis redis-cli
 ```
 
 ## Starting psql connected to a container
-Accessing `postgres`. The Safe Config and Safe transaction services share the same instance
+Accessing `postgres`. The Safe Config and Safe transaction services use the different instance
 
 ```bash
-docker exec -it safe-infrastructure_db_1 psql -U postgres
+docker compose exec -it cfg-db psql -U postgres
+docker compose exec -it txs-db psql -U postgres
 ```
