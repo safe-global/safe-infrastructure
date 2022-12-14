@@ -13,7 +13,7 @@ The setup presented here, assumes that only L2 safes will be used. Additionally,
 - `CGW_VERSION=v3.29.0`
 - `TXS_VERSION=v4.6.1`
 
-You can change them to the version you are interested available in [docker-hub](https://hub.docker.com/u/gnosispm) but be aware that not all versions of our services are compatible with each other, so do so **at your own risk.**
+You can change them to the version you are interested available in [docker-hub](https://hub.docker.com/u/safeglobal) but be aware that not all versions of our services are compatible with each other, so do so **at your own risk.**
 
 - [Brief Docker Crash Course](docker_cheatsheet.md)
 - [Guide to run our services locally](running_locally.md)
