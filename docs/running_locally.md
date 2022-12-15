@@ -37,7 +37,7 @@ You can now access http://localhost:8000/cfg/admin/ and login using the credenti
 To achieve the same for the Safe Transaction service:
 
 ```bash
-docker compose exec txs-web python manage.py createsuperuser --noinput --username root
+docker compose exec txs-web python manage.py createsuperuser --username root
 ```
 
 Note 1: note that the path to `manage.py` is different. In case you need to run other commands.
