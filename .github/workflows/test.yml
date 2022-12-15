@@ -1,0 +1,14 @@
+name: Python CI
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+
+jobs:
+  test-app:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check docker compose valid
+      run: docker compose pull
