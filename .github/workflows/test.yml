@@ -10,5 +10,8 @@ jobs:
   test-app:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - name: Check docker compose valid
-      run: docker compose pull
+      run: |
+        cp .env.sample .env
+        docker compose pull
