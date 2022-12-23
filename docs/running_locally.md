@@ -80,7 +80,7 @@ For the Transactions service, follow these steps:
 
 # Safe Web App
 
-The Gnosis Safe Web app will be available at at http://localhost:8080 although check the output of `docker compose` to see that the container is already running, as in some step-ups, it can take longer than expected.
+The Safe Web app will be available at at http://localhost:8080 although check the output of `docker compose` to see that the container is already running, as in some step-ups, it can take longer than expected ( >15 minutes).
 
 To configure the port in which the Safe Web app will be reachable, look into our sample [.env](.env.sample) file. The value of `REVERSE_PROXY_UI_PORT` defines this.
 
