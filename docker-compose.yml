@@ -106,7 +106,7 @@ services:
       - cgw-redis
 
   ui:
-    image: safeglobal/web-core
+    image: safeglobal/web-core:${UI_VERSION}
     env_file:
       - container_env_files/ui.env
     depends_on:
