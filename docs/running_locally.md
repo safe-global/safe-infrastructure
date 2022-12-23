@@ -80,9 +80,11 @@ For the Transactions service, follow these steps:
 
 # Safe Web App
 
-The Gnosis Safe Web app will be available at at http://localhost:8080 although check the output of `docker compose` to see that the container is already running, as in some step-ups, it can take longer than expected.
+The Safe Web app will be available at at http://localhost:8080 although check the output of `docker compose` to see that the container is already running, as in some step-ups, it can take longer than expected ( >15 minutes).
 
 To configure the port in which the Safe Web app will be reachable, look into our sample [.env](.env.sample) file. The value of `REVERSE_PROXY_UI_PORT` defines this.
 
-Additionally, the Safe Web app itself, defines which instance of the Safe CGW to use in this [container_env_files/ui.env](container_env_files/ui.env) file. The value of `REACT_APP_GATEWAY_URL` defines the URL where the Safe CGW can be reached. The default in this repo, points to the instance running as part of the `docker-compose.yml` file, but can be adjusted to point to our production instances, or your own hosted instance.
+Add your `NEXT_PUBLIC_INFURA_TOKEN` value if its required for the chain RCP uri in the [container_env_files/ui.env](container_env_files/ui.env) file.
+
+Additionally, the Safe Web app itself, defines which instance of the Safe CGW to use in this [container_env_files/ui.env](container_env_files/ui.env) file. The value of `NEXT_PUBLIC_GATEWAY_URL_PRODUCTION` defines the URL where the Safe CGW can be reached. The default in this repo, points to the instance running as part of the `docker-compose.yml` file, but can be adjusted to point to our production instances, or your own hosted instance.
 
