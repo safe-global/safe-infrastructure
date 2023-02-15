@@ -73,11 +73,13 @@ services:
     <<: *txs-worker
     environment:
       - WORKER_QUEUES=contracts,tokens
+      - ETHEREUM_NODE_URL=${RPC_NODE_URL}
 
   txs-worker-notifications-webhooks:
     <<: *txs-worker
     environment:
       - WORKER_QUEUES=notifications,webhooks
+      - ETHEREUM_NODE_URL=${RPC_NODE_URL}
 
   txs-scheduler:
     <<: *txs-worker
