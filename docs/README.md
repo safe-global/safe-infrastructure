@@ -18,3 +18,47 @@ You can change them to the version you are interested available in [docker-hub](
 
 - [Brief Docker Crash Course](docker_cheatsheet.md)
 - [Guide to run our services locally](running_locally.md)
+
+## Minimum Requirements
+
+For **Transaction Service** we have the next requirements:
+- Network Mainnet :
+	- Tx Service:
+		- CPU: 8 vCPU
+		- RAM: 32 GiB
+	- Database Service:
+		- CPU:  8 cores / 16 vCPU
+		- RAM: 64 GiB
+- Network Polygon :
+	- Tx Service:
+		- CPU: 4 vCPU
+		- RAM: 16 GiB
+	- Database Service:
+		- CPU: 2 cores / 4 vCPU
+		- RAM: 16 GiB
+- Network Gnosis-Chain :
+	- Tx Service:
+		- CPU: 4 vCPU
+		- RAM: 16 GiB
+	- Database Service:
+		- CPU: 2 core / 4 vCPU
+		- RAM: 16 GiB
+- Network Goerli :
+	- Tx Service:
+		- CPU: 4 vCPU
+		- RAM: 16 GiB
+	- Database Service:
+		- CPU: 1 core / 4 vCPU
+		- RAM: 8 GiB
+
+For **Client Gateway** we have the next requirements:
+- CPU: 2 vCPU
+- RAM: 8 GiB
+
+For **Config Service** we have the next requirements:
+- Config Service:
+	- CPU: 2 vCPU
+	-  RAM: 8 GiB
+- Database Config Service:
+	- CPU: 1 core / 2 vCPU
+	- RAM: 8 GiB
