@@ -48,7 +48,7 @@ For **Transaction Service** we have the next requirements:
 		- CPU: 4 vCPU
 		- RAM: 16 GiB
 	- Database Service:
-		- CPU: 1 core / 4 vCPU
+		- CPU: 1 core / 2 vCPU
 		- RAM: 8 GiB
 
 For **Client Gateway** we have the next requirements:
