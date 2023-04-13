@@ -1,4 +1,9 @@
 # Safe Infrastructure
+![Safe Infrastructure Diagram](https://user-images.githubusercontent.com/6909403/231757224-5c458fed-f38b-4833-839f-c3e6fafff005.png)
+
+- **Tx Service** is the core of the Safe. It indexes multisig transactions, module transactions, token transfers, collects signatures...
+- **Config Service** holds configuration for every Chain (blockexplorer, tx service url, apps enabled, wallets enabled...)
+- **Client Gateway** provides an API optimized for clients (web ui, android, ios...)
 
 ## Requirements
 
