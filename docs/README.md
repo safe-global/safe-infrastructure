@@ -1,5 +1,5 @@
 # Safe Infrastructure
-![Safe Infrastructure Diagram](https://user-images.githubusercontent.com/6909403/231757224-5c458fed-f38b-4833-839f-c3e6fafff005.png)
+![Safe Infrastructure Diagram](https://user-images.githubusercontent.com/6909403/231759528-c458d9a5-6da8-4141-9086-ff5af54c3dab.png)
 
 - **Tx Service** is the core of the Safe. It indexes multisig transactions, module transactions, token transfers, collects signatures... There must be **1 Tx Service per Chain**, with different workers, PostgreSQL, Redis and RabbitMQ.
 - **Config Service** holds configuration for every Chain (blockexplorer, tx service url, apps enabled, wallets enabled...). **1 instance of the Config Service supports multiple Chains**
