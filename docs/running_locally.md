@@ -1,15 +1,24 @@
 # Running our services locally
 
+## Requirements
+
+- `docker compose` (installation [guide](https://docs.docker.com/compose/install/))
+- [Brief Docker Crash Course](docker_cheatsheet.md)
+
+
 ## Step 1: setup your `.env`
 
-We recommend using what is available in the `.env.sample` file as it contains versions of our services guaranteed to be compatible with each other:
+We recommend using what is available in the `.env.sample` file:
 
 ```bash
 cp .env.sample .env
 ```
 
-Simply, edit your `.env` and set `RPC_NODE_URL` to the chain you want the services running against.
-**Important Note:** Only L2 safes are supported in the setup provided. Change this at your own risk.
+Then edit your `.env` and set `RPC_NODE_URL` to the chain you want the services running against.
+
+By default, last stable version will be used for every service.
+
+**Important Note:** Only L2 Safes are supported in the setup provided. Change this at your own risk.
 
 ## Step 2: Setup Django superusers
 
