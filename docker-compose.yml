@@ -21,14 +21,14 @@ services:
       - cgw-web
 
   txs-db:
-    image: postgres:13-alpine
+    image: postgres:14-alpine
     environment:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./data/txs-db:/var/lib/postgresql/data
 
   cfg-db:
-    image: postgres:13-alpine
+    image: postgres:14-alpine
     environment:
       POSTGRES_PASSWORD: postgres
     volumes:
