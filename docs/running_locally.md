@@ -86,6 +86,7 @@ For the Transactions service, follow these steps:
  - Ignore the `Address` field
  - Set the `Url` field to `http://nginx:8000/cgw/v1/chains/{chainId}/hooks/events` and replace `{chainId}` with the corresponding chainId
  - Set the `Authorization` field to `Basic <WEBHOOK_TOKEN>`, where `<WEBHOOK_TOKEN>` corresponds to the value of `WEBHOOK_TOKEN` in the `container_env_files/cgw.env` file of this repository
+ - Optionally: Add the Safe Master Copy of your network at `http://localhost:8000/txs/admin/history/safemastercopy`, where `version` corresponds to the version of your deployed Safe Master Copy. Check L2 if it conserns the Safe L2 version.
 
 # Safe Web App
 
