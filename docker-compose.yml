@@ -4,6 +4,20 @@ volumes:
   nginx-shared-txs:
   nginx-shared-cfg:
 
+x-healthcheck-db-template: &pghealthcheck
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U postgres"]
+    interval: 30s
+    timeout: 30s
+    retries: 3
+
+x-healthcheck-redis-template: &redishealthcheck
+  healthcheck:
+    test: ["CMD", "redis-cli", "ping"]
+    interval: 30s
+    timeout: 30s
+    retries: 3
+
 services:
 
   # Common nginx and database
@@ -26,11 +40,7 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./data/txs-db:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
+    <<: *pghealthcheck
 
   cfg-db:
     image: postgres:14-alpine
@@ -38,20 +48,12 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./data/cfg-db:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
+    <<: *pghealthcheck
 
   # Safe Transaction Service
   txs-redis:
     image: redis:alpine
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
+    <<: *redishealthcheck
 
   txs-rabbitmq:
     image: rabbitmq:alpine
@@ -133,11 +135,7 @@ services:
   # Safe Client Gateway
   cgw-redis:
     image: redis:alpine
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
+    <<: *redishealthcheck
 
   cgw-web:
     image: safeglobal/safe-client-gateway:${CGW_VERSION}
