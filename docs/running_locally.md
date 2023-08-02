@@ -5,7 +5,6 @@
 - `docker compose` (installation [guide](https://docs.docker.com/compose/install/))
 - [Brief Docker Crash Course](docker_cheatsheet.md)
 
-
 ## Step 1: setup your `.env`
 
 We recommend using what is available in the `.env.sample` file:
@@ -23,14 +22,18 @@ By default, last stable version will be used for every service.
 ## Step 2: Setup Django superusers
 
 ### Option #1 - Automated way
+
 We provide a script to automate this second step, if you want to use it, simply write:
+
 ```
 cd scripts
 sh run_locally.sh
 ```
 
 ### Option #2 - Manual way
+
 Start Docker containers:
+
 ```bash
 docker compose up
 ```
@@ -75,18 +78,19 @@ CGW_URL=http://nginx:8000/cgw
 CGW_FLUSH_TOKEN=some_random_token
 
 # Inside the file "container_env_files/cgw.env"
-WEBHOOK_TOKEN=some_random_token
+AUTH_TOKEN=some_random_token
 ```
 
-`WEBHOOK_TOKEN` and `CGW_FLUSH_TOKEN` must be the same.
+`AUTH_TOKEN` and `CGW_FLUSH_TOKEN` must be the same.
 
 For the Transactions service, follow these steps:
- - Access the admin panel at `http://localhost:8000/txs/admin`
- - click the `Add` link for `Web hooks`
- - Ignore the `Address` field
- - Set the `Url` field to `http://nginx:8000/cgw/v1/chains/{chainId}/hooks/events` and replace `{chainId}` with the corresponding chainId
- - Set the `Authorization` field to `Basic <WEBHOOK_TOKEN>`, where `<WEBHOOK_TOKEN>` corresponds to the value of `WEBHOOK_TOKEN` in the `container_env_files/cgw.env` file of this repository
- - Optionally: Add the Safe Master Copy of your network at `http://localhost:8000/txs/admin/history/safemastercopy`, where `version` corresponds to the version of your deployed Safe Master Copy. Check L2 if it concerns the Safe L2 version. This is required for chains that were not added to [safe-eth-py](https://github.com/safe-global/safe-eth-py/blob/master/gnosis/safe/addresses.py)
+
+- Access the admin panel at `http://localhost:8000/txs/admin`
+- click the `Add` link for `Web hooks`
+- Ignore the `Address` field
+- Set the `Url` field to `http://nginx:8000/cgw/v1/chains/{chainId}/hooks/events` and replace `{chainId}` with the corresponding chainId
+- Set the `Authorization` field to `Basic <AUTH_TOKEN>`, where `<AUTH_TOKEN>` corresponds to the value of `AUTH_TOKEN` in the `container_env_files/cgw.env` file of this repository
+- Optionally: Add the Safe Master Copy of your network at `http://localhost:8000/txs/admin/history/safemastercopy`, where `version` corresponds to the version of your deployed Safe Master Copy. Check L2 if it concerns the Safe L2 version. This is required for chains that were not added to [safe-eth-py](https://github.com/safe-global/safe-eth-py/blob/master/gnosis/safe/addresses.py)
 
 # Safe Web App
 
@@ -97,4 +101,3 @@ To configure the port in which the Safe Web app will be reachable, look into our
 Add your `NEXT_PUBLIC_INFURA_TOKEN` value if its required for the chain RCP uri in the [container_env_files/ui.env](../container_env_files/ui.env) file.
 
 Additionally, the Safe Web app itself, defines which instance of the Safe CGW to use in this [container_env_files/ui.env](../container_env_files/ui.env) file. The value of `NEXT_PUBLIC_GATEWAY_URL_PRODUCTION` defines the URL where the Safe CGW can be reached. The default in this repo, points to the instance running as part of the `docker-compose.yml` file, but can be adjusted to point to our production instances, or your own hosted instance.
-
