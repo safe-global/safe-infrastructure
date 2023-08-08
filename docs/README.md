@@ -1,4 +1,5 @@
 # Safe Infrastructure
+
 ![Safe Infrastructure Diagram](https://user-images.githubusercontent.com/6909403/231760296-afaa126c-db04-4f62-b996-c53b1d884247.png)
 
 - **Tx Service** is the core of the Safe. It indexes multisig transactions, module transactions, token transfers, collects signatures... There must be **1 Tx Service per Chain**, with different workers, PostgreSQL, Redis and RabbitMQ.
@@ -11,8 +12,8 @@ This repository contains the minimum viable local setup for our backend services
 The setup presented here, assumes that only L2 safes will be used. Last stable version will be used for every service, but you can adjust them on `.env`, e.g.:
 
 ```bash
-CFG_VERSION=v2.26.0
-CGW_VERSION=v3.29.0
+CFG_VERSION=v2.60.0
+CGW_VERSION=v0.4.1
 TXS_VERSION=v4.6.1
 UI_VERSION=v1.2.0
 ```

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 volumes:
   nginx-shared-txs:
@@ -19,7 +19,6 @@ x-healthcheck-redis-template: &redishealthcheck
     retries: 3
 
 services:
-
   # Common nginx and database
   nginx:
     image: nginx:alpine
@@ -138,7 +137,7 @@ services:
     <<: *redishealthcheck
 
   cgw-web:
-    image: safeglobal/safe-client-gateway:${CGW_VERSION}
+    image: safeglobal/safe-client-gateway-nest:${CGW_VERSION}
     env_file:
       - container_env_files/cgw.env
     depends_on:
