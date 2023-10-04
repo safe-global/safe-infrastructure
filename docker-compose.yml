@@ -3,7 +3,7 @@ version: "3.8"
 volumes:
   nginx-shared-txs:
   nginx-shared-cfg:
-  
+
 x-healthcheck-db-template: &pghealthcheck
   healthcheck:
     test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -162,7 +162,6 @@ services:
     ports:
       - "${REVERSE_PROXY_UI_PORT}:8080"
 
-
   general-rabbitmq:
     image: rabbitmq:alpine
     healthcheck:
@@ -173,7 +172,7 @@ services:
       start_period: 15s
     
   evs-web:
-    image: docker.io/library/safe-events-service-web
+    image: safeglobal/safe-events-service:${EVS_VERSION}
     env_file:
       - container_env_files/evs.env 
     depends_on:
