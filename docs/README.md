@@ -18,7 +18,7 @@ CFG_VERSION=v2.60.0
 CGW_VERSION=v0.4.1
 TXS_VERSION=v4.6.1
 UI_VERSION=v1.2.0
-EVS_VERSION=v0.5.0
+EVENTS_VERSION=v0.5.0
 ```
 
 You can change them to the version you are interested available in [docker-hub](https://hub.docker.com/u/safeglobal) but be aware that not all versions of our services are compatible with each other, so do so **at your own risk.**

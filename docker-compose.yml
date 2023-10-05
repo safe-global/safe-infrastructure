@@ -32,7 +32,7 @@ services:
       - txs-web
       - cfg-web
       - cgw-web
-      - evs-web
+      - events-web
 
   txs-db:
     image: postgres:14-alpine
@@ -50,12 +50,12 @@ services:
       - ./data/cfg-db:/var/lib/postgresql/data
     <<: *pghealthcheck
 
-  evs-db:
+  events-db:
     image: postgres:14-alpine
     environment:
       POSTGRES_PASSWORD: postgres
     volumes:
-      - ./data/evs-db:/var/lib/postgresql/data
+      - ./data/events-db:/var/lib/postgresql/data
     <<: *pghealthcheck 
 
   # Safe Transaction Service
@@ -171,12 +171,12 @@ services:
       retries: 3
       start_period: 15s
     
-  evs-web:
-    image: safeglobal/safe-events-service:${EVS_VERSION}
+  events-web:
+    image: safeglobal/safe-events-service:${EVENTS_VERSION}
     env_file:
-      - container_env_files/evs.env 
+      - container_env_files/events.env 
     depends_on:
-        evs-db:
+        events-db:
           condition: service_healthy
         general-rabbitmq:
           condition: service_healthy      

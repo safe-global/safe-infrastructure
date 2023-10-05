@@ -85,8 +85,8 @@ AUTH_TOKEN=some_random_token
 
 For the Events service, follow these steps:
 
-- Access the admin panel at `http://localhost:8000/evs/admin`
-- Default user and password is defined in `container_env_files/evs.env`
+- Access the admin panel at `http://localhost:8000/events/admin`
+- Default user and password is defined in `container_env_files/events.env`
 - Click on `Webhook` at the left column and then click on `Create new`
 - Set the `Url` field to `http://nginx:8000/cgw/v1/hooks/events`
 - Set description `CGW`
