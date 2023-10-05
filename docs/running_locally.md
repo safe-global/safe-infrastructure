@@ -68,7 +68,7 @@ Check this [section](chain_info.md) for a more complete guide on the fields for 
 
 ## Step 4: Add your webhooks
 
-Our services invalidate the caches of the client gateway using webhooks. Both the Config and Transaction service need to be configured. For the Config service, unless you've changed the values in `cgw.env` and `cfg.env` then you don't need to do anything, otherwise:
+Our services invalidate the caches of the client gateway using webhooks. Both the Config and Events service need to be configured. For the Config service, unless you've changed the values in `cgw.env` and `cfg.env` then you don't need to do anything, otherwise:
 
 ```bash
 
@@ -83,14 +83,17 @@ AUTH_TOKEN=some_random_token
 
 `AUTH_TOKEN` and `CGW_FLUSH_TOKEN` must be the same.
 
-For the Transactions service, follow these steps:
+For the Events service, follow these steps:
 
-- Access the admin panel at `http://localhost:8000/txs/admin`
-- click the `Add` link for `Web hooks`
-- Ignore the `Address` field
-- Set the `Url` field to `http://nginx:8000/cgw/v1/chains/{chainId}/hooks/events` and replace `{chainId}` with the corresponding chainId
+- Access the admin panel at `http://localhost:8000/events/admin`
+- Default user and password is defined in `container_env_files/events.env`
+- Click on `Webhook` at the left column and then click on `Create new`
+- Set the `Url` field to `http://nginx:8000/cgw/v1/hooks/events`
+- Set description `CGW`
+- Enable `Is Active` field
 - Set the `Authorization` field to `Basic <AUTH_TOKEN>`, where `<AUTH_TOKEN>` corresponds to the value of `AUTH_TOKEN` in the `container_env_files/cgw.env` file of this repository
-- Optionally: Add the Safe Master Copy of your network at `http://localhost:8000/txs/admin/history/safemastercopy`, where `version` corresponds to the version of your deployed Safe Master Copy. Check L2 if it concerns the Safe L2 version. This is required for chains that were not added to [safe-eth-py](https://github.com/safe-global/safe-eth-py/blob/master/gnosis/safe/addresses.py)
+- Leave chains field blank
+- Enable every webhook option and click `Save`
 
 # Safe Web App
 

@@ -32,6 +32,7 @@ services:
       - txs-web
       - cfg-web
       - cgw-web
+      - events-web
 
   txs-db:
     image: postgres:14-alpine
@@ -48,6 +49,14 @@ services:
     volumes:
       - ./data/cfg-db:/var/lib/postgresql/data
     <<: *pghealthcheck
+
+  events-db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./data/events-db:/var/lib/postgresql/data
+    <<: *pghealthcheck 
 
   # Safe Transaction Service
   txs-redis:
@@ -152,3 +161,22 @@ services:
       - nginx
     ports:
       - "${REVERSE_PROXY_UI_PORT}:8080"
+
+  general-rabbitmq:
+    image: rabbitmq:alpine
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 15s
+      timeout: 30s
+      retries: 3
+      start_period: 15s
+    
+  events-web:
+    image: safeglobal/safe-events-service:${EVENTS_VERSION}
+    env_file:
+      - container_env_files/events.env 
+    depends_on:
+        events-db:
+          condition: service_healthy
+        general-rabbitmq:
+          condition: service_healthy      
