@@ -161,6 +161,8 @@ services:
       - nginx
     ports:
       - "${REVERSE_PROXY_UI_PORT}:8080"
+    command: >
+      sh -c "yarn after-install && yarn static-serve"
 
   general-rabbitmq:
     image: rabbitmq:alpine
