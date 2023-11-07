@@ -6,7 +6,7 @@
 - **Tx Service** is the core of the Safe. It indexes multisig transactions, module transactions, token transfers, collects signatures... There must be **1 Tx Service per Chain**, with different workers, PostgreSQL, Redis and RabbitMQ.
 - **Config Service** holds configuration for every Chain (blockexplorer, tx service url, apps enabled, wallets enabled...). **1 instance of the Config Service supports multiple Chains**
 - **Client Gateway** provides an API optimized for clients (web ui, android, ios...). **1 instance of the Client Gateway supports multiple Chains**
-- **Safe Events Service** handle Safe indexing events from Transaction Service and deliver as HTTP webhooks.
+- **Events Service** handles Safe indexing events from Transaction Service and deliver as HTTP webhooks.
 
 ## Setup
 
