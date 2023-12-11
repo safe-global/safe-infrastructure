@@ -1,0 +1,23 @@
+{{- $releaseName := .Release.Name }} # define the local var here
+
+{{- range $chain, $chainValues := .Values.chains }}
+{{ $txs_external_pg_endpoint := $chainValues.txs_db_pg_endpoint }}
+# if the chain is activated AND there is no external db endpoint set, then create the svc
+{{ if and $chainValues.enabled (ne $txs_external_pg_endpoint false) }}
+---
+apiVersion: v1
+
+kind: PersistentVolumeClaim
+
+metadata:
+  name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-db-claim0
+
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+
+{{- end }} # if
+{{- end }} # range

@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+
+kind: PersistentVolumeClaim
+
+metadata:
+  name: {{ .Release.Name }}-events-db-claim0
+
+spec:
+  storageClassName: {{ .Release.Name }}-ebs-retain-volumes
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
