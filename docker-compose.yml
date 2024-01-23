@@ -36,6 +36,7 @@ services:
 
   txs-db:
     image: postgres:14-alpine
+    command: -c 'max_connections=250'
     environment:
       POSTGRES_PASSWORD: postgres
     volumes:
@@ -56,7 +57,7 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./data/events-db:/var/lib/postgresql/data
-    <<: *pghealthcheck 
+    <<: *pghealthcheck
 
   # Safe Transaction Service
   txs-redis:
@@ -159,8 +160,8 @@ services:
       - container_env_files/ui.env
     depends_on:
       - nginx
-    ports:
-      - "${REVERSE_PROXY_UI_PORT}:8080"
+    expose:
+      - 8080
 
   general-rabbitmq:
     image: rabbitmq:alpine
@@ -170,13 +171,13 @@ services:
       timeout: 30s
       retries: 3
       start_period: 15s
-    
+
   events-web:
     image: safeglobal/safe-events-service:${EVENTS_VERSION}
     env_file:
-      - container_env_files/events.env 
+      - container_env_files/events.env
     depends_on:
-        events-db:
-          condition: service_healthy
-        general-rabbitmq:
-          condition: service_healthy      
+      events-db:
+        condition: service_healthy
+      general-rabbitmq:
+        condition: service_healthy
