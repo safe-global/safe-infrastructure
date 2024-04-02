@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   txs-flower:
     image: safeglobal/safe-transaction-service:${TXS_VERSION}
