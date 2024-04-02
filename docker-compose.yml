@@ -1,5 +1,3 @@
-version: "3.8"
-
 volumes:
   nginx-shared-txs:
   nginx-shared-cfg:
