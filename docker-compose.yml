@@ -16,6 +16,13 @@ x-healthcheck-redis-template: &redishealthcheck
     timeout: 30s
     retries: 3
 
+x-healthcheck-celery-template: &celeryhealthcheck
+  healthcheck:
+    test: ["CMD", "celery", "inspect", "ping"]
+    interval: 30s
+    timeout: 30s
+    retries: 3
+
 services:
   # Common nginx and database
   nginx:
@@ -65,22 +72,6 @@ services:
   txs-rabbitmq:
     image: rabbitmq:alpine
 
-  txs-web:
-    image: safeglobal/safe-transaction-service:${TXS_VERSION}
-    env_file:
-      - container_env_files/txs.env
-    environment:
-      - ETHEREUM_NODE_URL=${RPC_NODE_URL}
-    depends_on:
-      txs-db:
-        condition: service_healthy
-      txs-redis:
-        condition: service_healthy
-    working_dir: /app
-    volumes:
-      - nginx-shared-txs:/nginx
-    command: docker/web/run_web.sh
-
   txs-worker-indexer: &txs-worker
     image: safeglobal/safe-transaction-service:${TXS_VERSION}
     env_file:
@@ -95,6 +86,7 @@ services:
       txs-redis:
         condition: service_healthy
     command: docker/web/celery/worker/run.sh
+    <<: *celeryhealthcheck
 
   txs-worker-contracts-tokens:
     <<: *txs-worker
@@ -102,9 +94,7 @@ services:
       - WORKER_QUEUES=contracts,tokens
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
     depends_on:
-      txs-db:
-        condition: service_healthy
-      txs-redis:
+      txs-worker-indexer:
         condition: service_healthy
 
   txs-worker-notifications-webhooks:
@@ -113,10 +103,22 @@ services:
       - WORKER_QUEUES=notifications,webhooks
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
     depends_on:
-      txs-db:
+      txs-worker-indexer:
         condition: service_healthy
-      txs-redis:
+
+  txs-web:
+    image: safeglobal/safe-transaction-service:${TXS_VERSION}
+    env_file:
+      - container_env_files/txs.env
+    environment:
+      - ETHEREUM_NODE_URL=${RPC_NODE_URL}
+    depends_on:
+      txs-worker-indexer:
         condition: service_healthy
+    working_dir: /app
+    volumes:
+      - nginx-shared-txs:/nginx
+    command: docker/web/run_web.sh
 
   txs-scheduler:
     <<: *txs-worker
