@@ -72,22 +72,6 @@ services:
   txs-rabbitmq:
     image: rabbitmq:alpine
 
-  txs-web:
-    image: safeglobal/safe-transaction-service:${TXS_VERSION}
-    env_file:
-      - container_env_files/txs.env
-    environment:
-      - ETHEREUM_NODE_URL=${RPC_NODE_URL}
-    depends_on:
-      txs-db:
-        condition: service_healthy
-      txs-redis:
-        condition: service_healthy
-    working_dir: /app
-    volumes:
-      - nginx-shared-txs:/nginx
-    command: docker/web/run_web.sh
-
   txs-worker-indexer: &txs-worker
     image: safeglobal/safe-transaction-service:${TXS_VERSION}
     env_file:
@@ -121,6 +105,20 @@ services:
     depends_on:
       txs-worker-indexer:
         condition: service_healthy
+
+  txs-web:
+    image: safeglobal/safe-transaction-service:${TXS_VERSION}
+    env_file:
+      - container_env_files/txs.env
+    environment:
+      - ETHEREUM_NODE_URL=${RPC_NODE_URL}
+    depends_on:
+      txs-worker-indexer:
+        condition: service_healthy
+    working_dir: /app
+    volumes:
+      - nginx-shared-txs:/nginx
+    command: docker/web/run_web.sh
 
   txs-scheduler:
     <<: *txs-worker
