@@ -1,5 +1,7 @@
 # Running our services for production
 
+First take a look at [Guide to run our services locally](running_locally.md).
+
 ## Requirements
 
 ### Tx Service

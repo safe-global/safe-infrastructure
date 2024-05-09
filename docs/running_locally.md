@@ -2,8 +2,12 @@
 
 ## Requirements
 
-- `docker compose` (installation [guide](https://docs.docker.com/compose/install/))
+- `Docker Compose` (installation [guide](https://docs.docker.com/compose/install/))
 - [Brief Docker Crash Course](docker_cheatsheet.md)
+
+**Important Note:** If you followed the guide some time ago, it's recommended to clean the existing data:
+- Remove docker volumes: `docker-compose rm -f -v`.
+- Remove `./data` folder, that holds the database.
 
 ## Step 1: setup your `.env`
 
