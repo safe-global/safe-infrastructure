@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "safe.fullname" . }}-cfg-db
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "safe.fullname" . }}-cfg-db
+  template:
+    metadata:
+      labels:
+        app: {{ include "safe.fullname" . }}-cfg-db
+    spec:
+      containers:
+        - name: cfg-db
+          image: postgres:14-alpine
+          #
+#          livenessProbe:
+#            exec:
+#              command:
+#                - pg_isready -U postgres
+#            failureThreshold: 3
+#            periodSeconds: 30
+#            timeoutSeconds: 30
+          #
+          env:
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgres.cfg_db.pg_password }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.cfg_db.pg_user }}
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          #
+          volumeMounts:
+            - name: cfg-db-claim0
+              mountPath: /var/lib/postgresql/data
+              subPath: cfg-db-data
+      volumes:
+        - name: cfg-db-claim0
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-cfg-db-claim0
