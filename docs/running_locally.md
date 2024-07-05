@@ -6,8 +6,10 @@
 - [Brief Docker Crash Course](docker_cheatsheet.md)
 
 **Important Note:** If you followed the guide some time ago, it's recommended to clean the existing data:
+- Remove containers: `docker-compose down -v`.
 - Remove docker volumes: `docker-compose rm -f -v`.
 - Remove `./data` folder, that holds the database.
+- Download last versions of the images: `docker-compose pull`
 
 ## Step 1: setup your `.env`
 
@@ -39,6 +41,8 @@ sh run_locally.sh
 Start Docker containers:
 
 ```bash
+docker compose pull
+docker compose down -v
 docker compose up
 ```
 
