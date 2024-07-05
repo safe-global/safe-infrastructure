@@ -3,7 +3,9 @@
 set -e
 
 echo "==> $(date +%H:%M:%S) ==> Starting up environment containers..."
-docker compose up -d \
+docker compose pull \
+  && docker compose down -v \
+  && docker compose up -d \
   && echo "==> $(date +%H:%M:%S) ==> Creating super-user for Safe Config Service... (may take a while)" \
   && docker compose exec cfg-web python src/manage.py createsuperuser \
   && echo "==> $(date +%H:%M:%S) ==> Creating super-user for Safe Transaction Service... (may take a while)" \
