@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+
+kind: Service
+
+metadata:
+  name: {{ include "safe.fullname" . }}-ui
+
+spec:
+  selector:
+    app: {{ include "safe.fullname" . }}-ui
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443        # the port we want to reach our app from ingress
+      targetPort: 3000 # the port the app is listening on
