@@ -1,0 +1,77 @@
+images: # ref : https://github.com/safe-global/safe-infrastructure#setup
+  #
+  ui: safeglobal/safe-wallet-web:latest # Notice: needs to be rebuilt in order to listen on 0.0.0.0:3000
+
+chains:
+  zora:
+    enabled: true
+    network_name: "ZoraGoerli"
+    node_url: "https://testnet.rpc.zora.energy"
+    txs_db_pg_password: postgres
+    txs_db_pg_user: postgres
+    # if the chain is activated AND there is no external db endpoint set, the db pod will be created
+    txs_db_pg_endpoint: # leave empty unless an external service is to be used [eg AWS RDS]
+    txs_db_pg_dbname: postgres
+    txs_db_pg_db_port: 5432
+  mantle:
+    enabled: false
+    network_name: "MantleGoerli"
+    node_url: "https://rpc.testnet.mantle.xyz"
+    txs_db_pg_password: postgres
+    txs_db_pg_user: postgres
+    # if the chain is activated AND there is no external db endpoint set, the db pod will be created
+    txs_db_pg_endpoint: # leave empty unless an external service is to be used [eg AWS RDS]
+    txs_db_pg_dbname: postgres
+    txs_db_pg_db_port: 5432
+  base:
+    enabled: false
+    network_name: "BaseGoerli"
+    node_url: "https://goerli.base.org"
+    txs_db_pg_password: postgres
+    txs_db_pg_user: postgres
+    # if the chain is activated AND there is no external db endpoint set, the db pod will be created
+    txs_db_pg_endpoint: # leave empty unless an external service is to be used [eg AWS RDS]
+    txs_db_pg_dbname: postgres
+    txs_db_pg_db_port: 5432
+  avalanche:
+    enabled: false
+    network_name: "Fuji"
+    node_url: "https://avalanche-fuji.drpc.org/"
+    txs_db_pg_password: postgres
+    txs_db_pg_user: postgres
+    # if the chain is activated AND there is no external db endpoint set, the db pod will be created
+    txs_db_pg_endpoint: # leave empty unless an external service is to be used [eg AWS RDS]
+    txs_db_pg_dbname: postgres
+    txs_db_pg_db_port: 5432
+#  some-other-chain:
+#    enabled: false # true/false
+#    network_name: "...."
+#    node_url: "...."
+#    txs_db_pg_password: postgres
+#    txs_db_pg_user: postgres
+#    # if the chain is activated AND there is no external db endpoint set, the db pod will be created
+#    txs_db_pg_endpoint: # leave empty unless an external service is to be used [eg AWS RDS]
+#    txs_db_pg_dbname: postgres
+#    txs_db_pg_db_port: 5432
+
+postgres:
+  cfg_db:
+    pg_password: postgres
+    pg_user: postgres
+  events_db:
+    pg_password: postgres
+    pg_user: postgres
+
+tokens:
+  common_token_1: "MUST_BE_THE_SAME_BETWEEN_CGW_FLUSH_TOKEN_&_AUTH_TOKEN"
+
+wallets:
+  wallet_connect_project_id: "something"
+  wallet_connect_bridge: "something"
+
+# Note:
+# For dev purposes, the reclaim policy for the PVs can be set to -Delete-, so if/when the deployed release is deleted,
+# anything saved in the PVs will be also deleted.
+# If it is set to -Retain-, the volumes will not be deleted, so watch out for unused volumes pilling up :]
+custom_storage_class:
+  reclaimPolicy: Delete # Delete/Retain

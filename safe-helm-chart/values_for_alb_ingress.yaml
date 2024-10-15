@@ -1,0 +1,29 @@
+ingress:
+  ingressClassName: "alb"
+  host: some-special-subdomain.your-domain.com # notice : change this to yours
+  target_svc_port : 443
+
+  # Troubleshoot ALB ingress controller
+  # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-troubleshooting.html
+  annotations:
+    # notice: Documentation about the annotations
+    # ref: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/ingress/annotations/#healthcheck-protocol
+    alb.ingress.kubernetes.io/load-balancer-name: my-special-alb # notice : change this to yours
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: my-special-ingress-group # notice : change this to yours
+    alb.ingress.kubernetes.io/target-type: ip
+
+    # Certs
+    alb.ingress.kubernetes.io/certificate-arn: .... # notice : change this to yours
+    # https redirection
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443' # outside world -> service[443] -> container[3000]
+
+    # notice: ALB healthcheck details
+    # ref: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    #alb.ingress.kubernetes.io/healthcheck-path    : eg /v1/health
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30' # notice : change this to yours
+
+    #
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=600 # notice : change this to yours
