@@ -89,13 +89,13 @@ Our services invalidate the caches of the client gateway using webhooks. Both th
 # Inside the file "container_env_files/cfg.env"
 #...
 CGW_URL=http://nginx:8000/cgw
-CGW_FLUSH_TOKEN=some_random_token
+CGW_AUTH_TOKEN=some_random_token
 
 # Inside the file "container_env_files/cgw.env"
 AUTH_TOKEN=some_random_token
 ```
 
-`AUTH_TOKEN` and `CGW_FLUSH_TOKEN` must be the same.
+`AUTH_TOKEN` and `CGW_AUTH_TOKEN` must be the same.
 
 For the Events service, follow these steps:
 
