@@ -12,7 +12,7 @@ At any point, if you see a value that you are unsure how to supply, just look at
 
 These values are meant to be provided in the admin panel `http://localhost:8000/cfg/admin` of the Safe Config Service (CFG)
 
-## EIP-3779 Shortnames
+## EIP-3770 Shortnames
 
 They must match the ones in the [Safe SDK repo](https://github.com/safe-global/safe-core-sdk/blob/main/packages/protocol-kit/src/utils/eip-3770/config.ts).
 
