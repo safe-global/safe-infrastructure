@@ -1,6 +1,6 @@
 services:
   txs-flower:
-    image: safeglobal/safe-transaction-service:${TXS_VERSION}
+    image: gulabs/safe-transaction-service:${TXS_VERSION}
     env_file:
       - container_env_files/txs.env
     depends_on:

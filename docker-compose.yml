@@ -73,7 +73,7 @@ services:
     image: rabbitmq:alpine
 
   txs-worker-indexer: &txs-worker
-    image: safeglobal/safe-transaction-service:${TXS_VERSION}
+    image: gulabs/safe-transaction-service:${TXS_VERSION}
     env_file:
       - container_env_files/txs.env
     environment:
@@ -107,7 +107,7 @@ services:
         condition: service_healthy
 
   txs-web:
-    image: safeglobal/safe-transaction-service:${TXS_VERSION}
+    image: gulabs/safe-transaction-service:${TXS_VERSION}
     env_file:
       - container_env_files/txs.env
     environment:
@@ -131,7 +131,7 @@ services:
 
   # Safe Config Service
   cfg-web:
-    image: safeglobal/safe-config-service:${CFG_VERSION}
+    image: gulabs/safe-config-service:${CFG_VERSION}
     tty: true
     volumes:
       - nginx-shared-cfg:/nginx
@@ -147,7 +147,7 @@ services:
     <<: *redishealthcheck
 
   cgw-web:
-    image: safeglobal/safe-client-gateway-nest:${CGW_VERSION}
+    image: gulabs/safe-client-gateway-nest:${CGW_VERSION}
     env_file:
       - container_env_files/cgw.env
     depends_on:
@@ -155,7 +155,7 @@ services:
         condition: service_healthy
 
   ui:
-    image: safeglobal/safe-wallet-web:${UI_VERSION}
+    image: gulabs/safe-wallet-web:${UI_VERSION}
     env_file:
       - container_env_files/ui.env
     depends_on:
@@ -173,7 +173,7 @@ services:
       start_period: 15s
 
   events-web:
-    image: safeglobal/safe-events-service:${EVENTS_VERSION}
+    image: gulabs/safe-events-service:${EVENTS_VERSION}
     env_file:
       - container_env_files/events.env
     depends_on:
