@@ -2,3 +2,5 @@
 .DS_Store
 .idea/
 data/
+container_env_files/
+!container_env_files_templates/.env
