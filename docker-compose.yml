@@ -64,6 +64,14 @@ services:
       - ./data/events-db:/var/lib/postgresql/data
     <<: *pghealthcheck
 
+  cgw-db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./data/cgw-db:/var/lib/postgresql/data
+    <<: *pghealthcheck
+
   # Safe Transaction Service
   txs-redis:
     image: redis:alpine
