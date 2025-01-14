@@ -148,6 +148,8 @@ services:
     depends_on:
       cfg-db:
         condition: service_healthy
+      cgw-db:
+        condition: service_healthy
 
   # Safe Client Gateway
   cgw-redis:
