@@ -87,7 +87,7 @@ services:
     environment:
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
       - RUN_MIGRATIONS=1
-      - WORKER_QUEUES=default,indexing
+      - WORKER_QUEUES=default,indexing,processing
     depends_on:
       txs-db:
         condition: service_healthy
