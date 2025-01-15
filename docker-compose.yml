@@ -64,6 +64,14 @@ services:
       - ./data/events-db:/var/lib/postgresql/data
     <<: *pghealthcheck
 
+  cgw-db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./data/cgw-db:/var/lib/postgresql/data
+    <<: *pghealthcheck
+
   # Safe Transaction Service
   txs-redis:
     image: redis:alpine
@@ -79,7 +87,7 @@ services:
     environment:
       - ETHEREUM_NODE_URL=${RPC_NODE_URL}
       - RUN_MIGRATIONS=1
-      - WORKER_QUEUES=default,indexing
+      - WORKER_QUEUES=default,indexing,processing
     depends_on:
       txs-db:
         condition: service_healthy
@@ -139,6 +147,8 @@ services:
       - container_env_files/cfg.env
     depends_on:
       cfg-db:
+        condition: service_healthy
+      cgw-db:
         condition: service_healthy
 
   # Safe Client Gateway
