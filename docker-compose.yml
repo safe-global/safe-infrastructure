@@ -1,6 +1,7 @@
 volumes:
   nginx-shared-txs:
   nginx-shared-cfg:
+  nginx-shared-media:
 
 x-healthcheck-db-template: &pghealthcheck
   healthcheck:
@@ -33,6 +34,7 @@ services:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - nginx-shared-txs:/nginx-txs
       - nginx-shared-cfg:/nginx-cfg
+      - nginx-shared-media:/cfg-media
     depends_on:
       - txs-web
       - cfg-web
@@ -143,6 +145,7 @@ services:
     tty: true
     volumes:
       - nginx-shared-cfg:/nginx
+      - nginx-shared-media:/app/src/media
     env_file:
       - container_env_files/cfg.env
     depends_on:
