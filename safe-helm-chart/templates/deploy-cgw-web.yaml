@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "safe.fullname" . }}-cgw-web
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "safe.fullname" . }}-cgw-web
+  template:
+    metadata:
+      labels:
+        app: {{ include "safe.fullname" . }}-cgw-web
+    spec:
+      containers:
+        - name: cgw-web
+          image: safeglobal/safe-client-gateway-nest:latest
+          envFrom:
+            - configMapRef:
+                name: {{ include "safe.fullname" . }}-cgw-env

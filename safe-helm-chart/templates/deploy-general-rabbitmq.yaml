@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "safe.fullname" . }}-general-rabbitmq
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "safe.fullname" . }}-general-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: {{ include "safe.fullname" . }}-general-rabbitmq
+    spec:
+      containers:
+        - name: general-rabbitmq
+          image: rabbitmq:3.11.26-management
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: guest # Notice: change it if you'd like
+            - name: RABBITMQ_DEFAULT_PASS
+              value: guest # Notice: change it if you'd like
+          ports:
+            - name: rabbit-ui
+              containerPort: 15672
+#          livenessProbe:
+#            exec:
+#              command:
+#                - rabbitmq-diagnostics -q ping
+#            failureThreshold: 3
+#            initialDelaySeconds: 15
+#            periodSeconds: 15
+#            timeoutSeconds: 30

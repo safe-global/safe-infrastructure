@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "safe.fullname" . }}-ui
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "safe.fullname" . }}-ui
+  template:
+    metadata:
+      labels:
+        app: {{ include "safe.fullname" . }}-ui
+    spec:
+      containers:
+        - name: ui
+          image: {{ .Values.images.ui }}
+#          livenessProbe:
+#            exec:
+#              command:
+#                - ----something here----
+#            failureThreshold: 3
+#            initialDelaySeconds: 420 # 7 minutes, yeah the UI takes it's time to start ...
+#            periodSeconds: 60
+#            timeoutSeconds: 30
+          ports:
+            - name: port3000
+              containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: {{ include "safe.fullname" . }}-ui-env

@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+
+kind: Service
+
+metadata:
+  name: {{ include "safe.fullname" . }}-cfg-db
+
+spec:
+  selector:
+    app: {{ include "safe.fullname" . }}-cfg-db
+  ports:
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432

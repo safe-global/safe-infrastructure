@@ -1,0 +1,36 @@
+{{- $releaseName := .Release.Name }} # define the local var here
+
+{{- range $chain, $chainValues := .Values.chains }}
+{{ if $chainValues.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-redis
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-redis
+  template:
+    metadata:
+      labels:
+        app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-redis
+    spec:
+      containers:
+        - name: {{ $chainValues.network_name | lower }}-txs-redis
+          image: redis:alpine
+          #
+#          livenessProbe:
+#            exec:
+#              command:
+#                - redis-cli
+#                - ping
+#            failureThreshold: 3
+#            periodSeconds: 30
+#            timeoutSeconds: 30
+
+{{- end }} # if
+{{- end }} # range

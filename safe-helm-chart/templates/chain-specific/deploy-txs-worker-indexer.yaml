@@ -1,0 +1,38 @@
+{{- $releaseName := .Release.Name }} # define the local var here
+
+{{- range $chain, $chainValues := .Values.chains }}
+{{ if $chainValues.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-worker-indexer
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-worker-indexer
+  template:
+    metadata:
+      labels:
+        app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-worker-indexer
+    spec:
+      containers:
+        - name: {{ $chainValues.network_name | lower }}-txs-worker-indexer
+          image: safeglobal/safe-transaction-service:latest
+          command: ["docker/web/celery/worker/run.sh"]
+          env:
+            - name: ETHEREUM_NODE_URL
+              value: {{ $chainValues.node_url }}
+            - name: RUN_MIGRATIONS
+              value: "1"
+            - name: WORKER_QUEUES
+              value: default,indexing
+          envFrom:
+            - configMapRef:
+                name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-env
+
+{{- end }} # if
+{{- end }} # range
