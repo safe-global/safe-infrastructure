@@ -1,0 +1,45 @@
+{{- $releaseName := .Release.Name }} # define the local var here
+
+{{- range $chain, $chainValues := .Values.chains }}
+{{ if $chainValues.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  # A flower is a web-based tool for monitoring and administrating Celery clusters.
+  # ref: https://medium.com/featurepreneur/flower-celery-monitoring-tool-50fba1c8f623
+  name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-flower
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-flower
+  template:
+    metadata:
+      labels:
+        app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-flower
+    spec:
+      containers:
+        - name: {{ $chainValues.network_name | lower }}-txs-flower
+          image: safeglobal/safe-transaction-service:latest
+          command: ["docker/web/celery/flower/run.sh"]
+          ports:
+            - name: flower
+              containerPort: 5555
+          env:
+            - name: ETHEREUM_NODE_URL
+              value: {{ $chainValues.node_url }}
+            - name: RUN_MIGRATIONS
+              value: "1"
+            - name: WORKER_QUEUES
+              value: default,indexing
+            #- name: ETHEREUM_TRACING_NODE_URL
+            #  value: http://tracing-node-url
+          envFrom:
+            - configMapRef:
+                name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-env
+
+{{- end }} # if
+{{- end }} # range

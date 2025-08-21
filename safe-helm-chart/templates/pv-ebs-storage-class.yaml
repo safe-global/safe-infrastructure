@@ -1,0 +1,14 @@
+---
+apiVersion: storage.k8s.io/v1
+
+kind: StorageClass
+
+metadata:
+  name: {{ .Release.Name }}-ebs-retain-volumes
+
+reclaimPolicy: {{ .Values.custom_storage_class.reclaimPolicy }} # Delete/Retain
+
+provisioner: kubernetes.io/aws-ebs # change it to your liking
+parameters: # parameters specific for AWS EBS provisioner
+  fsType: ext4
+  type: gp2
