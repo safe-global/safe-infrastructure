@@ -38,6 +38,7 @@ services:
       - cfg-web
       - cgw-web
       - events-web
+      - ui
 
   txs-db:
     image: postgres:14-alpine
@@ -168,8 +169,6 @@ services:
     image: safeglobal/safe-wallet-web:${UI_VERSION}
     env_file:
       - container_env_files/ui.env
-    depends_on:
-      - nginx
     expose:
       - 8080
 
