@@ -1,6 +1,10 @@
 # Safe Infrastructure
 
+> Please note that software releases of some Safe services after Feb 17, 2026 are published by Safe Labs under **FSL-1.1-MIT license**.
+> This license does not permit making the software available to others in certain commercial products or services. You can find the applicable license texts in each GitHub repository and more information in our [blog](https://safe.global/blog/providing-the-infrastructure-for-self-custody-for-the-next-generation).
+
 **Safe infrastructure diagram**
+
 <figure><img src="./diagrams/safe-infrastructure-diagram.png" width="100%" alt="" /></figure>
 
 - **Tx Service** is the core of the Safe. It indexes multisig transactions, module transactions, token transfers, collects signatures... There must be **1 Tx Service per Chain**, with different workers, PostgreSQL, Redis and RabbitMQ.
