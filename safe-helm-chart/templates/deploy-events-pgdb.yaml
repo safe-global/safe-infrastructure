@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "safe.fullname" . }}-events-db
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "safe.fullname" . }}-events-db
+  template:
+    metadata:
+      labels:
+        app: {{ include "safe.fullname" . }}-events-db
+    spec:
+      containers:
+        - name: events-db
+          image: postgres:14-alpine
+          #
+#          livenessProbe:
+#            exec:
+#              command:
+#                - pg_isready -U postgres
+#            failureThreshold: 3
+#            periodSeconds: 30
+#            timeoutSeconds: 30
+          #
+          env:
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgres.events_db.pg_password }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.events_db.pg_user }}
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          #
+          volumeMounts:
+            - name: events-db-claim0
+              mountPath: /var/lib/postgresql/data
+              subPath: events-db-data
+      volumes:
+        - name: events-db-claim0
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-events-db-claim0
