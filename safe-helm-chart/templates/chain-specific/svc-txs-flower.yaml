@@ -1,0 +1,22 @@
+{{- $releaseName := .Release.Name }} # define the local var here
+
+{{- range $chain, $chainValues := .Values.chains }}
+{{ if $chainValues.enabled }}
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-flower
+
+spec:
+  selector:
+    app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-flower
+  ports:
+    - name: flower
+      protocol: TCP
+      port: 5555
+      targetPort: 5555
+
+{{- end }} # if
+{{- end }} # range

@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "safe.fullname" . }}-nginx
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "safe.fullname" . }}-nginx
+  template:
+    metadata:
+      labels:
+        app: {{ include "safe.fullname" . }}-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          #
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          #
+          volumeMounts:
+            - name: nginx-conf-file-volume
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf # The name of the file to be placed
+              readOnly: true
+            - name: nginx-shared-txs
+              mountPath: /nginx-txs
+      volumes:
+        - name: nginx-conf-file-volume
+          configMap:
+            name: {{ include "safe.fullname" . }}-nginx-conf
+            items:
+              - key : nginx.conf # Name of the item inside the ConfigMap (under data:)
+                path: nginx.conf # Name of the file to be placed inside the pod
+        - name: nginx-shared-txs
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-nginx-shared-txs
+

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+  name: {{ include "safe.fullname" . }}-ui-ing
+
+  annotations:
+    {{- range $k, $v := .Values.ingress.annotations }}
+    {{ $k }}: {{ $v | quote }}
+    {{ end }}
+
+spec:
+  # notice: ref: https://kubernetes.github.io/ingress-nginx/user-guide/multiple-ingress/
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
+
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "safe.fullname" . }}-ui
+                port:
+                  number: {{ .Values.ingress.target_svc_port }}

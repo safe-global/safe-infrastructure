@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+
+kind: Service
+
+metadata:
+  name: {{ include "safe.fullname" . }}-cgw-redis
+
+spec:
+  selector:
+    app: {{ include "safe.fullname" . }}-cgw-redis
+  ports:
+    - name: redis
+      protocol: TCP
+      port: 6379
+      targetPort: 6379

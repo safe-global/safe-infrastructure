@@ -1,0 +1,45 @@
+{{- $releaseName := .Release.Name }} # define the local var here
+
+{{- range $chain, $chainValues := .Values.chains }}
+{{ if $chainValues.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-web
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-web
+  template:
+    metadata:
+      labels:
+        app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-web
+    spec:
+      containers:
+        - name: {{ $chainValues.network_name | lower }}-txs-web
+          image: safeglobal/safe-transaction-service:latest
+          command: [ "docker/web/run_web.sh" ]
+          ports:
+            - name: txs-web-ui
+              containerPort: 8888
+          env:
+            - name: ETHEREUM_NODE_URL
+              value: {{ $chainValues.node_url }}
+          envFrom:
+            - configMapRef:
+                name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-env
+          workingDir: /app
+          volumeMounts:
+            - name: nginx-shared-txs
+              mountPath: /nginx-txs
+      volumes:
+        - name: nginx-shared-txs
+          persistentVolumeClaim:
+            claimName: {{ $releaseName }}-nginx-shared-txs
+
+{{- end }} # if
+{{- end }} # range

@@ -1,0 +1,42 @@
+{{- $releaseName := .Release.Name }} # define the local var here
+
+{{- range $chain, $chainValues := .Values.chains }}
+
+{{ $pg_password := $chainValues.txs_db_pg_password }}
+{{ $pg_user := $chainValues.txs_db_pg_user }}
+{{ $txs_external_pg_endpoint := $chainValues.txs_db_pg_endpoint }}
+{{ $pg_dbname := $chainValues.txs_db_pg_dbname }}
+{{ $pg_db_port := $chainValues.txs_db_pg_db_port }}
+
+{{ if $chainValues.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-env
+
+data:
+  PYTHONPATH: /app/
+  DJANGO_SETTINGS_MODULE: config.settings.production
+  DJANGO_SECRET_KEY: 'Very-secure-secret-string'
+  DEBUG: '0'
+  ETH_L2_NETWORK: '1'
+
+  {{ if  $txs_external_pg_endpoint }}
+  DATABASE_URL: psql://{{ $pg_user }}:{{ $pg_password }}@{{ $txs_external_pg_endpoint }}:{{ $pg_db_port }}/{{ $pg_dbname }}
+  {{ else }}
+  DATABASE_URL: psql://{{ $pg_user }}:{{ $pg_password }}@{{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-db:{{ $pg_db_port }}/{{ $pg_dbname }}
+  {{ end }}
+
+  REDIS_URL: redis://{{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-redis:6379/0
+  CELERY_BROKER_URL: amqp://guest:guest@{{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-rabbitmq/
+  DJANGO_ALLOWED_HOSTS: "*"
+  FORCE_SCRIPT_NAME: /txs/
+  CSRF_TRUSTED_ORIGINS: "http://localhost:8000"
+  EVENTS_QUEUE_URL: amqp://{{ $releaseName }}-general-rabbitmq:5672
+  EVENTS_QUEUE_ASYNC_CONNECTION: 'True'
+  EVENTS_QUEUE_EXCHANGE_NAME: "safe-transaction-service-events"
+
+{{- end }} # if
+{{- end }} # range

@@ -1,0 +1,48 @@
+{{- $releaseName := .Release.Name }} # define the local var here
+
+{{- range $chain, $chainValues := .Values.chains }}
+
+{{ $pg_password := $chainValues.txs_db_pg_password }}
+{{ $pg_user := $chainValues.txs_db_pg_user }}
+{{ $txs_external_pg_endpoint := $chainValues.txs_db_pg_endpoint }}
+# if the chain is activated AND there is no external db endpoint set, then create the db pod
+{{ if and $chainValues.enabled (ne $txs_external_pg_endpoint false) }}
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-db
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-db
+  template:
+    metadata:
+      labels:
+        app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-db
+    spec:
+      containers:
+        - name: {{ $chainValues.network_name | lower }}-txs-db
+          image: postgres:14-alpine
+          #
+          env:
+            - name: POSTGRES_PASSWORD
+              value: {{ $pg_password }}
+            - name: POSTGRES_USER
+              value: {{ $pg_user }}
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          #
+          volumeMounts:
+            - name: txs-db-claim0
+              mountPath: /var/lib/postgresql/data
+              subPath: txs-db-data
+      volumes:
+        - name: txs-db-claim0
+          persistentVolumeClaim:
+            claimName: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-db-claim0
+{{- end }} # if
+{{- end }} # range

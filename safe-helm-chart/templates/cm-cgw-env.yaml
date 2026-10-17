@@ -1,0 +1,49 @@
+---
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: {{ include "safe.fullname" . }}-cgw-env
+
+data:
+  # HTTP
+  HTTP_CLIENT_REQUEST_TIMEOUT_MILLISECONDS: "60000"
+  # Config Service
+  # The base url for the Safe Config Service
+  SAFE_CONFIG_BASE_URI: http://{{ include "safe.fullname" . }}-nginx:8000/cfg
+  # Exchange Rates
+  # The base Exchange Rate API to be used.
+  EXCHANGE_API_BASE_URI: "http://api.exchangeratesapi.io/v1"
+  EXCHANGE_API_KEY: "your_exchange_rate_api_token"
+  # Redis
+  # The host name of where the Redis instance is running
+  REDIS_HOST: {{ include "safe.fullname" . }}-cgw-redis
+  # The default port of where the Redis instance is running (default=6379)
+  #REDIS_PORT: 6379
+
+  # Cache Expiration Times
+  # The default cache expiration time in seconds if none is set (default=60)
+  # EXPIRATION_TIME_DEFAULT_SECONDS:
+  # DEFAULT_NOT_FOUND_EXPIRE_TIME_SECONDS:
+  # CONTRACT_NOT_FOUND_EXPIRE_TIME_SECONDS:
+  # TOKEN_NOT_FOUND_EXPIRE_TIME_SECONDS:
+
+  # Privileged endpoint's authorization token
+  # The AUTH_TOKEN should always be set
+  AUTH_TOKEN: {{ .Values.tokens.common_token_1 }}
+
+  # Log level
+  LOG_LEVEL: "info"
+  # LOG_SILENT: "true"
+
+  #
+  ALERTS_PROVIDER_SIGNING_KEY: "ALERTS_PROVIDER_SIGNING_KEY_something"
+  ALERTS_PROVIDER_API_KEY: "ALERTS_PROVIDER_API_KEY_something"
+  ALERTS_PROVIDER_ACCOUNT: "ALERTS_PROVIDER_ACCOUNT_something"
+  ALERTS_PROVIDER_PROJECT: "ALERTS_PROVIDER_PROJECT_something"
+
+  #
+  EMAIL_API_APPLICATION_CODE: "EMAIL_API_APPLICATION_CODE_something"
+  EMAIL_API_FROM_EMAIL: "some@email.com"
+  EMAIL_API_KEY: "EMAIL_API_KEY_something"
+  EMAIL_TEMPLATE_UNKNOWN_RECOVERY_TX: "EMAIL_TEMPLATE_UNKNOWN_RECOVERY_TX_something"

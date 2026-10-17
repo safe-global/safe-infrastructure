@@ -1,0 +1,24 @@
+{{- $releaseName := .Release.Name }} # define the local var here
+
+{{- range $chain, $chainValues := .Values.chains }}
+{{ $txs_external_pg_endpoint := $chainValues.txs_db_pg_endpoint }}
+# if the chain is activated AND there is no external db endpoint set, then create the svc
+{{ if and $chainValues.enabled (ne $txs_external_pg_endpoint false) }}
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-db
+
+spec:
+  selector:
+    app: {{ $releaseName }}-{{ $chainValues.network_name | lower }}-txs-db
+  ports:
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+{{- end }} # if
+{{- end }} # range
