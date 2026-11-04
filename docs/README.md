@@ -18,11 +18,11 @@ This repository contains the minimum viable local setup for our backend services
 The setup presented here, assumes that only L2 safes will be used. Last stable version will be used for every service, but you can adjust them on `.env`, e.g.:
 
 ```bash
-CFG_VERSION=v2.60.0
-CGW_VERSION=v0.4.1
-TXS_VERSION=v4.6.1
-UI_VERSION=v1.2.0
-EVENTS_VERSION=v0.5.0
+CFG_VERSION=v2.112.0
+CGW_VERSION=v1.130.0
+TXS_VERSION=v6.14.0
+UI_VERSION=v1.104.2
+EVENTS_VERSION=v1.8.0
 ```
 
 You can change them to the version you are interested available in [our container registry](https://github.com/orgs/safe-global/packages?repo_name=safe-infrastructure) but be aware that not all versions of our services are compatible with each other, so do so **at your own risk.**
